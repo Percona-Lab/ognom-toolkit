@@ -116,7 +116,6 @@ func mergeOpInfoMaps(s1 OpInfo, s2 OpInfo) (result OpInfo) {
 
 // This is just a helper function to not pollute the header generator with default initialazers
 func initSlowQueryLogHeaderVars(input OpInfo) (output OpInfo) {
-	//func initSlowQueryLogHeaderVars(input OpInfo) (millis string, sent string, user string, host string, inserted string, scanned string, deleted string, returned string) {
 	output = make(OpInfo)
 	output["millis"] = "n/a"
 	output["sent"] = "n/a"
@@ -151,7 +150,6 @@ func initSlowQueryLogHeaderVars(input OpInfo) (output OpInfo) {
 		output["returned"] = v
 	}
 	return output
-	//	return millis, sent, user, host, inserted, scanned, deleted, returned
 }
 
 /*

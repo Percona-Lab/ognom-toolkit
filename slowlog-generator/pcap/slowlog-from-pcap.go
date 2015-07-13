@@ -1,3 +1,11 @@
+/*
+This program uses libpcap to capture MongoDB/TokuMX network traffic and generates a MySQL-style slow query log, that can then be used with pt-query-digest for workload analysis
+
+IMPORTANT:
+
+At this point this is alpha quality. The code is a mix of my own work, plus stuff I copied from facebookgo/dvara and gopacket/examples/pcapdump.
+It may or may not get cleaned up and reorganized, depending on interest (from the community) and availability (from me/other maintainers).
+*/
 package main
 
 import (
@@ -314,7 +322,7 @@ func dump(src gopacket.PacketDataSource) {
 			case OpReply:
 				elapsed := processReplyPayload(payload, header)
 				opInfo := make(myutil.OpInfo)
-				opInfo["millis"] = fmt.Sprintf("%v", elapsed)
+				opInfo["millis"] = fmt.Sprintf("%f", elapsed)
 				opInfo["sent"] = fmt.Sprintf("%v", len(payload))
 				fmt.Print(myutil.GetSlowQueryLogHeader(opInfo))
 				query, ok := queries[header.ResponseTo]

@@ -21,7 +21,6 @@ import (
 	myutil "../util"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/examples/util"
-	_ "github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -31,7 +30,7 @@ var fname = flag.String("r", "", "Filename to read from, overrides -i")
 var snaplen = flag.Int("s", 65536, "Snap length (number of bytes max to read per packet")
 var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
 var promisc = flag.Bool("promisc", true, "Set promiscuous mode")
-var verbose = 2
+var verbose = 1
 
 // next code all copied from facebookgo/dvara
 
@@ -223,6 +222,25 @@ func processInsertPayload(data []byte, header messageHeader) (output string) {
 	return output
 }
 
+func processGetMorePayload(data []byte, header messageHeader) (output string) {
+	//	if verbose > 2 {
+	//		fmt.Println("Processing GetMore payload")
+	//	}
+	sub := data[20:]
+	current := sub[0]
+	docStartsAt := 0
+	for i := 0; current != 0; i++ {
+		current = sub[i]
+		docStartsAt = i
+	}
+	collectionName := sub[0:docStartsAt]
+	output = fmt.Sprintf("%v.getMore()", string(collectionName[:]))
+	//if verbose > 2 {
+	//fmt.Println(output)
+	//}
+	return output
+}
+
 func processQueryPayload(data []byte, header messageHeader) (output string) {
 	sub := data[20:]
 	current := sub[0]
@@ -292,6 +310,18 @@ func dump(src gopacket.PacketDataSource) {
 	for packet := range source.Packets() {
 		//fmt.Println(packet.ApplicationLayer().Payload())
 		al := packet.ApplicationLayer()
+		/*
+			defragger := ip4defrag.NewIPv4Defragmenter()
+			in, err := defragger.DefragIPv4(packet.Layer(layers.LayerTypeIPv4))
+			if err != nil {
+				log.Fatalln(err)
+			}
+			if in == nil {
+				fmt.Println("Got a fragment")
+			} else {
+				fmt.Println("Got a full packet or the last fragment of one")
+			}
+		*/
 		if al != nil {
 			/*
 				json := make(map[string]interface{})
@@ -312,14 +342,22 @@ func dump(src gopacket.PacketDataSource) {
 			header.ResponseTo = getInt32(payload, 8)
 			header.OpCode = OpCode(getInt32(payload, 12))
 			startTimes[header.RequestID] = time.Now()
-			fmt.Println("OpCode: ", header.OpCode)
 			if verbose > 2 {
+				fmt.Println("OpCode: ", header.OpCode)
 				fmt.Println("Captured packet")
 				fmt.Printf("Captured packet (OpCode: %v)\n", header.OpCode)
 			}
 			switch header.OpCode {
 			case OpQuery:
 				queries[header.RequestID] = processQueryPayload(payload, header)
+				if verbose > 2 {
+					fmt.Printf("Saved Query for %v", header.RequestID)
+				}
+			case OpGetMore:
+				queries[header.RequestID] = processGetMorePayload(payload, header)
+				if verbose > 2 {
+					fmt.Printf("Saved GetMore for %v", header.RequestID)
+				}
 			case OpReply:
 				elapsed := processReplyPayload(payload, header)
 				opInfo := make(myutil.OpInfo)
@@ -331,16 +369,22 @@ func dump(src gopacket.PacketDataSource) {
 					fmt.Print(query)
 					delete(queries, header.ResponseTo)
 				} else {
-					fmt.Print("   Orphaned reply ...")
+					if verbose > 1 {
+						fmt.Printf("   Orphaned reply for %v\n", header.ResponseTo)
+					}
 				}
 			case OpUpdate:
 				queries[header.RequestID] = processUpdatePayload(payload, header)
 			case OpInsert:
 				queries[header.RequestID] = processInsertPayload(payload, header)
 			default:
-				fmt.Println("Unimplemented Opcode ", header.OpCode)
+				if verbose > 1 {
+					fmt.Println("Unimplemented Opcode ", header.OpCode)
+				}
 			}
-		}
+		} // else {
+		//	fmt.Println("empty? ", packet)
+		//}
 	}
 }
 

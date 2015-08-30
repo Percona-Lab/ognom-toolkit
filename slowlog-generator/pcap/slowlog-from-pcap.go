@@ -234,7 +234,7 @@ func processGetMorePayload(data []byte, header messageHeader) (output string) {
 		docStartsAt = i
 	}
 	collectionName := sub[0:docStartsAt]
-	output = fmt.Sprintf("%v.getMore()", string(collectionName[:]))
+	output = fmt.Sprintf("%v.getMore();\n", string(collectionName[:]))
 	//if verbose > 2 {
 	//fmt.Println(output)
 	//}

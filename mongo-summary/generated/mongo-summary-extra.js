@@ -27,6 +27,11 @@ var FILLER = "#";
                   cols.forEach(
                       function (element, array, index) {
                           print("   " + element);
+			  auxdb.getCollectionNames().forEach(function(collection) {
+			     indexes = auxdb[collection].getIndexes();
+			     print("Indexes for " + collection + ":");
+			     printjson(indexes);
+			  });
                       }
                   );
               }

@@ -256,6 +256,11 @@ Let's start with getting a list of databases and their collections:
                   cols.forEach(
                       function (element, array, index) {
                           print("   " + element);
+			  auxdb.getCollectionNames().forEach(function(collection) {
+			     indexes = auxdb[collection].getIndexes();
+			     print("Indexes for " + collection + ":");
+			     printjson(indexes);
+			  });
                       }
                   );
               }

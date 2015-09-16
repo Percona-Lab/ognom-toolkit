@@ -1,0 +1,6 @@
+#!/bin/bash
+killall mongod
+killall mongos
+sleep 0.3
+[ $(ps -ef|grep -c mongod) -gt 1 ] && killall -9 mongod
+[ $(ps -ef|grep -c mongo) -gt 1 ] && killall -9 mongos

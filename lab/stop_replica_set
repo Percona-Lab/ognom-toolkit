@@ -1,0 +1,9 @@
+#!/bin/bash
+
+. common.sh
+port_prefix=2700
+
+for i in 1 2 3 4; do
+    stop_mongo $PWD/mongod_rsTest_$i 
+done
+

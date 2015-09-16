@@ -1,0 +1,26 @@
+#!/bin/bash
+
+. common.sh
+port_prefix=2700
+
+msg "Starting 4 mongod instances"
+
+for i in 1 2 3 4; do
+    init_dbpath $PWD/mongod_rsTest_$i
+    start_mongod $PWD/mongod_rsTest_$i $port_prefix$i rsTest
+done
+
+msg "Sleeping two seconds and initializing set"
+sleep 2
+mongo --port ${port_prefix}1 --eval "rs.initiate()"
+
+msg "Waiting for set to initiate"
+while [ $(mongo --port ${port_prefix}1 --eval "printjson(rs.status())"|grep -c PRIMARY) -eq 0 ]; do sleep 1; done
+
+msg "Adding secondaries"
+h=$(hostname)
+mongo --port ${port_prefix}1 --eval "for (i=2; i<=4; i++) {rs.add(\"${h}:2700\"+i)}"
+
+msg "Waiting one second before attempting to print status"
+sleep 1
+mongo --port ${port_prefix}1 --eval "printjson(rs.status())"

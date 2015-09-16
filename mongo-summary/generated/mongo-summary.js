@@ -26,7 +26,9 @@ var FILLER = "#";
       aux = db.currentOp()["inprog"];
       result["inprog"] = aux.length + " operations in progress";
       result["hostname"] = db.hostInfo()["system"]["hostname"];
-      result["serverStatus"] = db.serverStatus();
+      result["serverStatus"] = db._adminCommand({serverStatus:1});
+      result["parameters"] = db._adminCommand({getParameter:'*'})
+      result["cmdLineOpts"] = db._adminCommand({getCmdLineOpts:1})
       return result;
   }
 
@@ -41,15 +43,20 @@ var FILLER = "#";
           } else {
               result["summary"] = "Replication error: " + rstatus["errmsg"]
           }
+          result["members"] = [];
       } else {
           // This is a replica set
           var secondaries = 0;
           var arbiters = 0;
+	  result["summary"] = "This is a replica set but I could not figure out this node's role"
           result["members"] = [];
           rstatus["members"].forEach(
               function (element, index, array) {
                   if (element["self"]) {
                       result["summary"] = "Node is " + element["stateStr"] + " in a " + rstatus["members"].length + " members replica set"
+		      if (!result["summary"]) {
+			  result["summary"] = "This is a replica set, but something went wrong when trying to figure out this node's role"
+		      }
                   } else {
                       if (element["state"] == 2) {
                           secondaries++;
@@ -110,18 +117,18 @@ var FILLER = "#";
   }
 
   print(getHeader("Percona Toolkit MongoDB Summary Report",FILLER,LENGTH));
-  var aux = getInstanceBasicInfo(db);
-  print("Report generated on " + aux["hostname"] + " at " + aux["serverTime"]);
-  print(aux["inprog"]);
+  var basicInfo = getInstanceBasicInfo(db);
+  print("Report generated on " + basicInfo["hostname"] + " at " + basicInfo["serverTime"]);
+  print(basicInfo["inprog"]);
   if (isMongos()) {
       print(getHeader("Sharding Summary (mongos detected)",FILLER,LENGTH));
-      aux = getShardingSummary();
-      print("Detected " + aux["shards"].length + " shards");
+      basicInfo = getShardingSummary();
+      print("Detected " + basicInfo["shards"].length + " shards");
       print("Sharded databases: ");
-      aux["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+      basicInfo["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
       print("");
       print("Unsharded databases: ");
-      aux["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+      basicInfo["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
       print("");
       print(getHeader("Shards detail",FILLER,LENGTH));
       getShardsInfo()["shards"].forEach(
@@ -135,16 +142,27 @@ var FILLER = "#";
       );
   } else { 
       print(getHeader("Replication summary",FILLER,LENGTH));
-      aux = getReplicationSummary(db);
-      print(aux["summary"]);
-      print(aux["summaryExtra"]);
-      if (aux["members"].length > 0) {
+      replicationSummary = getReplicationSummary(db);
+      if (replicationSummary["summary"]) {
+	  print(replicationSummary["summary"])
+      } else {
+	  print("Something is wrong with the replication summary (it is undefined)")
+      }
+      if (replicationSummary["summaryExtra"]) {
+	  print(replicationSummary["summaryExtra"]);
+      }
+      if (replicationSummary["members"].length > 0) {
           print(getHeader("Replica set members",FILLER,LENGTH));
-          aux["members"].forEach(
+          replicationSummary["members"].forEach(
               function(member, array, index) {
                   print(member);
               }
           );
       }
   } 
-  printjson(aux["serverStatus"]);
+  print(getHeader("Server Status",FILLER,LENGTH))
+  printjson(basicInfo["serverStatus"]);
+  print(getHeader("Server Parameters",FILLER,LENGTH))
+  printjson(basicInfo["parameters"]);
+  print(getHeader("Command Line Options",FILLER,LENGTH))
+  printjson(basicInfo["cmdLineOpts"]);

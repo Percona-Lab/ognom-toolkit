@@ -118,6 +118,8 @@ Let's start with a function to get the current date from [[http://docs.mongodb.o
       result["inprog"] = aux.length + " operations in progress";
       result["hostname"] = db.hostInfo()["system"]["hostname"];
       result["serverStatus"] = db._adminCommand({serverStatus:1});
+      result["parameters"] = db._adminCommand({getParameter:'*'})
+      result["cmdLineOpts"] = db._adminCommand({getCmdLineOpts:1})
       return result;
   }
 #+END_SRC
@@ -333,6 +335,10 @@ This is not a function, because it is what will be run by the mongo shell when i
   } 
   print(getHeader("Server Status",FILLER,LENGTH))
   printjson(basicInfo["serverStatus"]);
+  print(getHeader("Server Parameters",FILLER,LENGTH))
+  printjson(basicInfo["parameters"]);
+  print(getHeader("Command Line Options",FILLER,LENGTH))
+  printjson(basicInfo["cmdLineOpts"]);
 #+END_SRC
 
 We also need presentation code for the extra script. 

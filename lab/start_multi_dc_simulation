@@ -1,0 +1,40 @@
+#!/bin/bash
+# This is meant to simulate a setup split between three data centers, with two data nodes on each of the first DCs, and an arbiter on the third one. 
+# Everything runs on localhost but this can still let you see how the set reacts to basic node failures (i.e. you can kill both nodes on dc2 to simulate that dc going offline)
+
+. common.sh
+
+h=$(hostname)
+port_prefix=2700
+port_suffix=1
+msg "Starting data nodes"
+for dc in 1 2; do
+    for node in 1 2; do
+	init_dbpath $PWD/mongod_dc${dc}_node${node}
+	start_mongod $PWD/mongod_dc${dc}_node${node} $port_prefix$port_suffix rsMulti
+	port_suffix=$((port_suffix+1))
+    done
+done
+
+msg "Starting arbiter"
+init_dbpath $PWD/mongod_dc2_arb
+start_mongod $PWD/mongod_dc2_arb $port_prefix$port_suffix rsMulti
+
+msg "Sleeping two seconds before initializing set"
+sleep 2
+mongo --port ${port_prefix}1 --eval "rs.initiate()"
+
+msg "Waiting for set to initiate"
+while [ $(mongo --port ${port_prefix}1 --eval "printjson(rs.status())"|grep -c PRIMARY) -eq 0 ]; do sleep 1; done
+
+port_suffix=1
+for dc in 1 2; do
+    for node in 1 2; do
+	mongo --port ${port_prefix}1 --eval "rs.add(\"$h:$port_prefix\"+$port_suffix)"
+	port_suffix=$((port_suffix+1))
+    done
+done
+mongo --port ${port_prefix}1 --eval "rs.addArb(\"$h:$port_prefix$port_suffix\")"
+
+msg "Sleeping one second before attempting to print status"
+mongo --port ${port_prefix}1 --eval "printjson(rs.status())"

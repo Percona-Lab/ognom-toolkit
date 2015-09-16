@@ -5,6 +5,9 @@ I decided to write this in Javascript, since that lets me make use of the mongod
 
 I am not a Javascript programmer so a lot of the code probably will feel odd or even ugly to seasoned Javascript programmers.  
 
+Testing is very minimal at the moment, and performed only on a single
+MongoDB version (2.4.x first, 3.0.x now). Bug reports are welcome.  
+
 * Generating the utility
 I used emacs and org-mode to write this, so if you want to change the org file and generate the resulting files again, you'll need to extract source code from the org file. This is done via the org-babel-tangle function, which by default is bound to C-c C-v t. You can find more information about this process [[http://orgmode.org/manual/Extracting-source-code.html][here]].
 * Usage

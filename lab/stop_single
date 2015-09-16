@@ -1,0 +1,4 @@
+#!/bin/bash
+
+. common.sh
+stop_mongo ./mongod_single

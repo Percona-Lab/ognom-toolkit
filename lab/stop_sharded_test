@@ -1,0 +1,20 @@
+#!/bin/bash
+
+. common.sh
+port_prefix=2800
+shard_port_prefix=3000
+mongos_port=29000
+
+msg "stopping config servers"
+configdb=""
+for i in 1 2 3; do
+    stop_mongo $PWD/mongod_config_$i
+done
+
+msg "stopping mongos"
+stop_mongo $PWD/mongos
+
+msg "stopping shards"
+for i in 1 2 3; do
+    stop_mongo $PWD/mongod_shard_$i
+done

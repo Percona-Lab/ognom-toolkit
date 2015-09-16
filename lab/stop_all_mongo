@@ -1,4 +1,6 @@
 #!/bin/bash
+# Just a shorthand to kill anything mongo running on the system. 
+# Obviously not meant to be run on a production server. 
 killall mongod
 killall mongos
 sleep 0.3

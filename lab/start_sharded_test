@@ -1,0 +1,39 @@
+#!/bin/bash
+
+. common.sh
+port_prefix=2800
+shard_port_prefix=3000
+mongos_port=29000
+h=$(hostname)
+
+
+msg "starting config servers"
+configdb=""
+for i in 1 2 3; do
+    init_dbpath $PWD/mongod_config_$i
+    start_mongod $PWD/mongod_config_$i $port_prefix$i configsvr
+    configdb="$h:${port_prefix}$i,${configdb}"
+done
+
+configdb=$(echo $configdb|sed 's/,$//g')
+
+msg "starting mongos"
+init_dbpath $PWD/mongos
+start_mongos $PWD/mongos $mongos_port $configdb
+
+msg "sleeping one second"
+sleep 1
+
+msg "starting and adding shards"
+for i in 1 2 3; do
+    init_dbpath $PWD/mongod_shard_$i
+    start_mongod $PWD/mongod_shard_$i $shard_port_prefix$i
+	sleep 0.3
+	mongo --host $h --port $shard_port_prefix$i --eval 'rs.initiate()'
+	sleep 0.3
+	mongo --host $h --port $mongos_port --eval "sh.addShard(\"shard$i/$h:$shard_port_prefix$i\")"
+done
+
+msg "sleeping one second before attempting to print status"
+sleep 1
+mongo --port $mongos_port --eval "printjson(sh.status())"

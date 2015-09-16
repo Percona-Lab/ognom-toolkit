@@ -1,3 +1,9 @@
+msg()
+{
+    echo $*>&2
+}
+
+
 init_dbpath()
 {
     [ $# -eq 1 ] || {
@@ -25,7 +31,7 @@ EOF
     [ -n "$replSet" ] && {
 	[ "$replSet" == "configsvr" ] && replSet="--configsvr" || replSet="--replSet $replSet"
     }
-    mongod --dbpath $dbpath --port $port --logpath $dbpath/mongod.log $replSet --pidfilepath $dbpath/mongod.pid --fork
+    mongod --rest --httpinterface --dbpath $dbpath --port $port --logpath $dbpath/mongod.log $replSet --pidfilepath $dbpath/mongod.pid --fork
 }
 
 start_mongos()
@@ -36,7 +42,7 @@ start_mongos()
     Starts a new mongos instance with the specified arguments. 
 EOF
     }
-    dbpath=$1; port=$2; configdb=#3
+    dbpath=$1; port=$2; configdb=$3
     # we intentionally use mongod.pid below so we can use stop_mongo
     mongos --setParameter enableTestCommands=1 --configdb $configdb --logpath $dbpath/mongos.log --port $port --pidfilepath $dbpath/mongod.pid --fork
 }

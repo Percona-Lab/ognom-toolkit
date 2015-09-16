@@ -3,7 +3,6 @@ msg()
     echo $*>&2
 }
 
-
 init_dbpath()
 {
     [ $# -eq 1 ] || {
@@ -20,6 +19,7 @@ EOF
 
 start_mongod()
 {
+    [ -z "$MONGOD" ] && MONGOD=mongod
     [ $# -ge 2 ] || {
 	cat <<EOF>&2
     usage: start_mongod <dbpath> <port> [replSet|configsvr]
@@ -31,11 +31,12 @@ EOF
     [ -n "$replSet" ] && {
 	[ "$replSet" == "configsvr" ] && replSet="--configsvr" || replSet="--replSet $replSet"
     }
-    mongod --rest --httpinterface --dbpath $dbpath --port $port --logpath $dbpath/mongod.log $replSet --pidfilepath $dbpath/mongod.pid --fork
+    $MONGOD --rest --httpinterface --dbpath $dbpath --port $port --logpath $dbpath/mongod.log $replSet --pidfilepath $dbpath/mongod.pid --fork
 }
 
 start_mongos()
 {
+    [ -z "$MONGOS" ] && MONGOS=mongos
     [ $# -eq 3 ] || {
 	cat <<EOF>&2
     usage: start_mongos <dpath> <port> <configdb>
@@ -44,7 +45,7 @@ EOF
     }
     dbpath=$1; port=$2; configdb=$3
     # we intentionally use mongod.pid below so we can use stop_mongo
-    mongos --setParameter enableTestCommands=1 --configdb $configdb --logpath $dbpath/mongos.log --port $port --pidfilepath $dbpath/mongod.pid --fork
+    $MONGOS --setParameter enableTestCommands=1 --configdb $configdb --logpath $dbpath/mongos.log --port $port --pidfilepath $dbpath/mongod.pid --fork
 }
 
 stop_mongo()

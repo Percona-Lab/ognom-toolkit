@@ -117,6 +117,7 @@ Let's start with a function to get the current date from [[http://docs.mongodb.o
       aux = db.currentOp()["inprog"];
       result["inprog"] = aux.length + " operations in progress";
       result["hostname"] = db.hostInfo()["system"]["hostname"];
+      result["serverStatus"] = db._adminCommand({serverStatus:1});
       return result;
   }
 #+END_SRC
@@ -135,15 +136,20 @@ Now get some info about replication. We want to know if we're a standalone insta
           } else {
               result["summary"] = "Replication error: " + rstatus["errmsg"]
           }
+          result["members"] = [];
       } else {
           // This is a replica set
           var secondaries = 0;
           var arbiters = 0;
+	  result["summary"] = "This is a replica set but I could not figure out this node's role"
           result["members"] = [];
           rstatus["members"].forEach(
               function (element, index, array) {
                   if (element["self"]) {
                       result["summary"] = "Node is " + element["stateStr"] + " in a " + rstatus["members"].length + " members replica set"
+		      if (!result["summary"]) {
+			  result["summary"] = "This is a replica set, but something went wrong when trying to figure out this node's role"
+		      }
                   } else {
                       if (element["state"] == 2) {
                           secondaries++;
@@ -282,18 +288,18 @@ This is not a function, because it is what will be run by the mongo shell when i
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
   print(getHeader("Percona Toolkit MongoDB Summary Report",FILLER,LENGTH));
-  var aux = getInstanceBasicInfo(db);
-  print("Report generated on " + aux["hostname"] + " at " + aux["serverTime"]);
-  print(aux["inprog"]);
+  var basicInfo = getInstanceBasicInfo(db);
+  print("Report generated on " + basicInfo["hostname"] + " at " + basicInfo["serverTime"]);
+  print(basicInfo["inprog"]);
   if (isMongos()) {
       print(getHeader("Sharding Summary (mongos detected)",FILLER,LENGTH));
-      aux = getShardingSummary();
-      print("Detected " + aux["shards"].length + " shards");
+      basicInfo = getShardingSummary();
+      print("Detected " + basicInfo["shards"].length + " shards");
       print("Sharded databases: ");
-      aux["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+      basicInfo["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
       print("");
       print("Unsharded databases: ");
-      aux["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+      basicInfo["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
       print("");
       print(getHeader("Shards detail",FILLER,LENGTH));
       getShardsInfo()["shards"].forEach(
@@ -307,18 +313,26 @@ This is not a function, because it is what will be run by the mongo shell when i
       );
   } else { 
       print(getHeader("Replication summary",FILLER,LENGTH));
-      aux = getReplicationSummary(db);
-      print(aux["summary"]);
-      print(aux["summaryExtra"]);
-      if (aux["members"].length > 0) {
+      replicationSummary = getReplicationSummary(db);
+      if (replicationSummary["summary"]) {
+	  print(replicationSummary["summary"])
+      } else {
+	  print("Something is wrong with the replication summary (it is undefined)")
+      }
+      if (replicationSummary["summaryExtra"]) {
+	  print(replicationSummary["summaryExtra"]);
+      }
+      if (replicationSummary["members"].length > 0) {
           print(getHeader("Replica set members",FILLER,LENGTH));
-          aux["members"].forEach(
+          replicationSummary["members"].forEach(
               function(member, array, index) {
                   print(member);
               }
           );
       }
   } 
+  print(getHeader("Server Status",FILLER,LENGTH))
+  printjson(basicInfo["serverStatus"]);
 #+END_SRC
 
 We also need presentation code for the extra script. 

@@ -26,6 +26,7 @@ var FILLER = "#";
       aux = db.currentOp()["inprog"];
       result["inprog"] = aux.length + " operations in progress";
       result["hostname"] = db.hostInfo()["system"]["hostname"];
+      result["serverStatus"] = db.serverStatus();
       return result;
   }
 
@@ -146,3 +147,4 @@ var FILLER = "#";
           );
       }
   } 
+  printjson(aux["serverStatus"]);

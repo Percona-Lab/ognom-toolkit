@@ -12,10 +12,7 @@ duration=$2
 
 dest=${TOOLNAME}_$(ts).gz
 trap "rm -f $dest.pid" SIGINT SIGTERM SIGHUP
-# get the header.
-$TOOLNAME -n 1 $interval | grep insert > $dest.headers
-# now get the capture without header lines.
-$TOOLNAME --noheaders -n $duration $interval | gzip -c > $dest &
+$TOOLNAME -n $duration $interval | gzip -c > $dest &
 echo $! > $dest.pid
 pid=$!
 # save the pid so we can monitor disk space while the tool runs, and

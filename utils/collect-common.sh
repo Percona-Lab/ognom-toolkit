@@ -26,5 +26,19 @@ ts()
     date "+%Y%m%d_%H%M%S"
 }
 
+monitor_disk_space()
+{
+pid=$1
+[ -z "$pid" ] && echo "monitor_disk_space \$pid" && exit 1
+while kill -SIGCONT $pid 2>/dev/null; do
+    [ $(df $PWD|tail -1|awk '{print $5}'|tr -d '%') -ge $MAX_USED_DISK_PCT ] && {
+        echo "Terminating due to used disk space (threshold is $MAX_USED_DISK_PCT %)"
+        kill -SIGTERM $pid
+        sleep 2
+        kill -SIGKILL $pid 2>/dev/null
+    }
+done
+}
+
 dest=$TOOLNAME_$(ts).gz
 trap "rm -f $dest.pid" SIGINT SIGTERM SIGHUP

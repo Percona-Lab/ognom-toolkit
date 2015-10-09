@@ -397,13 +397,13 @@ Also, I don't know of a reliable way to get the same hostname from javascript (h
 #+NAME: js-tests-header
 #+BEGIN_SRC js
 var BASE_PORT=2800;
-var HOSTNAME="telecaster";
+var HOSTNAME="telecaster.local";
 #+END_SRC
 
 Duplicating the hostname variable for bash: 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-export mst_HOSTNAME="telecaster"
+export mst_HOSTNAME="telecaster.local"
 #+END_SRC
 
 None of this functions does any validation on arguments, as they're only meant for internal use. We use the mst_ (mongo summary tests) prefix for all functions and variables to avoid polluting the namespace. 

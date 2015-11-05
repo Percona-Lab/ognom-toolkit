@@ -25,13 +25,15 @@ start_mongod()
     usage: start_mongod <dbpath> <port> [replSet|configsvr]
     Starts a new mongod instance with the provided args for --dbpath and --port (and optionally indicates a replica set name, or starts the instance as a config server). 
     Initializes the datadir if needed. 
+    If the environment variable MONGODB_ENGINE is defined, it is provided as arg for --storageEngine
 EOF
     }
-    dbpath=$1; port=$2; replSet=$3
+    dbpath=$1; port=$2; replSet=$3; storageEngine=""
     [ -n "$replSet" ] && {
 	[ "$replSet" == "configsvr" ] && replSet="--configsvr" || replSet="--replSet $replSet"
     }
-    $MONGOD --rest --httpinterface --dbpath $dbpath --port $port --logpath $dbpath/mongod.log $replSet --pidfilepath $dbpath/mongod.pid --fork
+    [ -n "$MONGODB_ENGINE" ] && storageEngine="--storageEngine $MONGODB_ENGINE"
+    $MONGOD --rest --httpinterface --dbpath $dbpath --port $port --logpath $dbpath/mongod.log $replSet --pidfilepath $dbpath/mongod.pid $storageEngine --fork
 }
 
 start_mongos()

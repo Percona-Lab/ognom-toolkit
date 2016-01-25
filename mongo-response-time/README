@@ -1,0 +1,7 @@
+This utility generates a csv file with time,response_time fields, in which: 
+- time is the current time (one second precision)
+- response_time is the response time for an operation
+
+The file should contain response time data for all operations seen on the wire. 
+
+The Makefile and a required library are located under the ../slowlog-generator/ tree, this symlink is included here only for convenience when browsing the repo. 

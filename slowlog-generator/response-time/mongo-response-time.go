@@ -126,7 +126,7 @@ func process(src gopacket.PacketDataSource) {
 			switch header.OpCode {
 			case OpReply:
 				//fmt.Println("reply")
-				fmt.Printf("%v,%20.10f\n", time.Now(), processReplyPayload(payload, header))
+				fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), processReplyPayload(payload, header))
 			default:
 			}
 		}

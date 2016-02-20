@@ -27,10 +27,14 @@ var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
 var port = flag.Int("p", 9119, "The http port to listen on")
 var verbose = 1
 var max = 0
-var rtData = prometheus.NewHistogram(prometheus.HistogramOpts{
-	Name:    "mongodb_response_time",
+var rtHistogram = prometheus.NewHistogram(prometheus.HistogramOpts{
+	Name:    "mongodb_histogram_response_time",
 	Help:    "Response time for MongoDB operations",
 	Buckets: prometheus.ExponentialBuckets(0.00000001, 2, 10),
+})
+var rtSummary = prometheus.NewSummary(prometheus.SummaryOpts{
+	Name: "mongodb_summary_response_time",
+	Help: "Response time for MongoDB operations",
 })
 
 // next code all copied from facebookgo/dvara
@@ -106,7 +110,8 @@ func processReplyPayload(data []byte, header messageHeader) (output float64) {
 
 func startWebServer() {
 	handler := prometheus.Handler()
-	prometheus.MustRegister(rtData)
+	prometheus.MustRegister(rtHistogram)
+	prometheus.MustRegister(rtSummary)
 	strport := strconv.Itoa(*port)
 	fmt.Println("Starting HTTP server on port " + strport)
 	http.Handle("/metrics", handler)
@@ -144,7 +149,9 @@ func process(src gopacket.PacketDataSource) {
 			switch header.OpCode {
 			case OpReply:
 				//fmt.Println("reply")
-				rtData.Observe(processReplyPayload(payload, header))
+				r := processReplyPayload(payload, header)
+				rtHistogram.Observe(r)
+				rtSummary.Observe(r)
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)
 			default:
 			}

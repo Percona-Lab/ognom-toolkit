@@ -26,7 +26,7 @@ var snaplen = flag.Int("s", 65536, "Snap length (number of bytes max to read per
 var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
 var port = flag.Int("p", 9119, "The http port to listen on")
 var verbose = 1
-var max = 0
+var max = 0.0
 var rtHistogram = prometheus.NewHistogram(prometheus.HistogramOpts{
 	Name:    "mongodb_histogram_response_time",
 	Help:    "Response time for MongoDB operations",
@@ -35,6 +35,11 @@ var rtHistogram = prometheus.NewHistogram(prometheus.HistogramOpts{
 var rtSummary = prometheus.NewSummary(prometheus.SummaryOpts{
 	Name: "mongodb_summary_response_time",
 	Help: "Response time for MongoDB operations",
+})
+var rtMax = prometheus.NewGauge(prometheus.GaugeOpts{
+	Namespace: "ognom",
+	Name:      "mongodb_max_response_time",
+	Help:      "Max response time seen for MongoDB operations in the last 10 seconds",
 })
 
 // next code all copied from facebookgo/dvara
@@ -112,6 +117,7 @@ func startWebServer() {
 	handler := prometheus.Handler()
 	prometheus.MustRegister(rtHistogram)
 	prometheus.MustRegister(rtSummary)
+	prometheus.MustRegister(rtMax)
 	strport := strconv.Itoa(*port)
 	fmt.Println("Starting HTTP server on port " + strport)
 	http.Handle("/metrics", handler)
@@ -127,6 +133,7 @@ func process(src gopacket.PacketDataSource) {
 	source := gopacket.NewPacketSource(src, dec)
 	//source.Lazy = *lazy
 	source.NoCopy = true
+	lastMaxPeriodStart := time.Now()
 	for packet := range source.Packets() {
 		al := packet.ApplicationLayer()
 		if al != nil {
@@ -152,6 +159,10 @@ func process(src gopacket.PacketDataSource) {
 				r := processReplyPayload(payload, header)
 				rtHistogram.Observe(r)
 				rtSummary.Observe(r)
+				if r > max || time.Since(lastMaxPeriodStart).Seconds() >= 5 {
+					max = r
+				}
+				rtMax.Set(max)
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)
 			default:
 			}

@@ -161,6 +161,7 @@ func process(src gopacket.PacketDataSource) {
 				rtSummary.Observe(r)
 				if r > max || time.Since(lastMaxPeriodStart).Seconds() >= 5 {
 					max = r
+					lastMaxPeriodStart = time.Now()
 				}
 				rtMax.Set(max)
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)

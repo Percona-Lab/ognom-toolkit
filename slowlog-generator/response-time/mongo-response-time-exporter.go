@@ -191,9 +191,10 @@ func process(src gopacket.PacketDataSource) {
 				} else if sighupped && !handledSighup {
 					max = max * -1
 					handledSighup = true
+				} else if !sighupped {
+					handledSighup = false
 				}
 				rtMax.Set(max)
-				handledSighup = false
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)
 			default:
 			}

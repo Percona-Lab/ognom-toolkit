@@ -10,8 +10,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/google/gopacket"
@@ -26,21 +28,35 @@ var snaplen = flag.Int("s", 65536, "Snap length (number of bytes max to read per
 var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
 var port = flag.Int("p", 9119, "The http port to listen on")
 var verbose = 1
+
+// the currently max seen response time value
 var max = 0.0
+
+// prometheus histogram (https://godoc.org/github.com/prometheus/client_golang/prometheus#Histogram)
 var rtHistogram = prometheus.NewHistogram(prometheus.HistogramOpts{
 	Name:    "mongodb_histogram_response_time",
 	Help:    "Response time for MongoDB operations",
 	Buckets: prometheus.ExponentialBuckets(0.00000001, 2, 10),
 })
+
+// prometheus summary (https://godoc.org/github.com/prometheus/client_golang/prometheus#Summary)
 var rtSummary = prometheus.NewSummary(prometheus.SummaryOpts{
 	Name: "mongodb_summary_response_time",
 	Help: "Response time for MongoDB operations",
 })
+
+// prometheus gauge (https://godoc.org/github.com/prometheus/client_golang/prometheus#Gauge)
 var rtMax = prometheus.NewGauge(prometheus.GaugeOpts{
 	Namespace: "ognom",
 	Name:      "mongodb_max_response_time",
 	Help:      "Max response time seen for MongoDB operations in the last 10 seconds",
 })
+
+// channel to receive SIGHUP
+var sigs = make(chan os.Signal, 1)
+
+// flag to indicate if we've received a SIGHUP signal in the last 30 seconds
+var sighupped = false
 
 // next code all copied from facebookgo/dvara
 
@@ -124,6 +140,15 @@ func startWebServer() {
 	http.ListenAndServe(":"+strport, nil)
 }
 
+func sighandler() {
+	for {
+		<-sigs
+		sighupped = true
+		time.Sleep(30 * time.Second)
+		sighupped = false
+	}
+}
+
 func process(src gopacket.PacketDataSource) {
 	var dec gopacket.Decoder
 	var ok bool
@@ -134,6 +159,7 @@ func process(src gopacket.PacketDataSource) {
 	//source.Lazy = *lazy
 	source.NoCopy = true
 	lastMaxPeriodStart := time.Now()
+	handledSighup := false
 	for packet := range source.Packets() {
 		al := packet.ApplicationLayer()
 		if al != nil {
@@ -159,11 +185,15 @@ func process(src gopacket.PacketDataSource) {
 				r := processReplyPayload(payload, header)
 				rtHistogram.Observe(r)
 				rtSummary.Observe(r)
-				if r > max || time.Since(lastMaxPeriodStart).Seconds() >= 5 {
+				if !sighupped && (r > max || time.Since(lastMaxPeriodStart).Seconds() >= 5) {
 					max = r
 					lastMaxPeriodStart = time.Now()
+				} else if sighupped && !handledSighup {
+					max = max * -1
+					handledSighup = true
 				}
 				rtMax.Set(max)
+				handledSighup = false
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)
 			default:
 			}
@@ -177,7 +207,9 @@ func main() {
 	defer util.Run()()
 	var handle *pcap.Handle
 	var err error
+	signal.Notify(sigs, syscall.SIGHUP)
 	go startWebServer()
+	go sighandler()
 	flag.Parse()
 	if *fname != "" {
 		if handle, err = pcap.OpenOffline(*fname); err != nil {

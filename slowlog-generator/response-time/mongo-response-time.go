@@ -24,6 +24,8 @@ var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
 var promisc = flag.Bool("promisc", true, "Set promiscuous mode")
 var verbose = 1
 
+const StderrDumpFrequency = 10
+
 // next code all copied from facebookgo/dvara
 
 // OpCode allows identifying the type of operation:
@@ -95,11 +97,26 @@ func processReplyPayload(data []byte, header messageHeader) (output float64) {
 	return elapsed
 }
 
+func stderrDump(rt float64, currentMax float64, lastStderrDump time.Time) {
+	if rt > currentMax {
+		currentMax = rt
+	}
+	if time.Since(lastStderrDump).Seconds() > StderrDumpFrequency {
+		lastStderrDump = time.Now()
+		fmt.Fprintf(os.Stderr, "%s,%20.10f\n", time.Now().Format("15:04:05"), currentMax)
+		currentMax = 0
+	}
+}
+
 func process(src gopacket.PacketDataSource) {
 	var dec gopacket.Decoder
 	var ok bool
+	var currentMax float64 = 0
+	var lastStderrDump = time.Now()
 	if dec, ok = gopacket.DecodersByLayerName["Ethernet"]; !ok {
-		log.Fatalln("No decoder named", "Ethernet")
+		if dec, ok = gopacket.DecodersByLayerName["Loopback"]; !ok {
+			log.Fatalln("No decoder named", "Ethernet or Loopback")
+		}
 	}
 	source := gopacket.NewPacketSource(src, dec)
 	//source.Lazy = *lazy
@@ -126,7 +143,9 @@ func process(src gopacket.PacketDataSource) {
 			switch header.OpCode {
 			case OpReply:
 				//fmt.Println("reply")
-				fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), processReplyPayload(payload, header))
+				rt := processReplyPayload(payload, header)
+				fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)
+				stderrDump(rt, currentMax, lastStderrDump)
 			default:
 			}
 		}

@@ -1,0 +1,12 @@
+MongoDB shell version: 3.0.4
+connecting to: 127.0.0.1:28000/test
+2016-03-26T01:39:27.220-0300 W NETWORK  Failed to connect to 127.0.0.1:28000, reason: errno:61 Connection refused
+2016-03-26T01:39:27.221-0300 E QUERY    Error: couldn't connect to server 127.0.0.1:28000 (127.0.0.1), connection attempt failed
+    at connect (src/mongo/shell/mongo.js:181:14)
+    at (connect):1:6 at src/mongo/shell/mongo.js:181
+MongoDB shell version: 3.0.4
+connecting to: 127.0.0.1:28000/test
+2016-03-26T01:39:27.261-0300 W NETWORK  Failed to connect to 127.0.0.1:28000, reason: errno:61 Connection refused
+2016-03-26T01:39:27.262-0300 E QUERY    Error: couldn't connect to server 127.0.0.1:28000 (127.0.0.1), connection attempt failed
+    at connect (src/mongo/shell/mongo.js:181:14)
+    at (connect):1:6 at src/mongo/shell/mongo.js:181

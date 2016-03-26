@@ -1,0 +1,1350 @@
+MongoDB shell version: 3.0.4
+connecting to: 127.0.0.1:28000/test
+
+# Percona Toolkit MongoDB Summary Report ####################
+
+Report generated on telecaster.local:28000 at 2016-02-06 01:43:01 GMT-0300 (ART)
+0 operations in progress
+
+# Replication summary #######################################
+
+Node is PRIMARY in a 4 members replica set
+The set has 0 secondaries and 1 arbiters
+
+# Replica set members #######################################
+
+telecaster.local:28000
+telecaster.local:28001
+telecaster.local:28002
+telecaster.local:28003
+
+# Server Status #############################################
+
+{
+	"host" : "telecaster.local:28000",
+	"version" : "3.0.4",
+	"process" : "mongod",
+	"pid" : NumberLong(20757),
+	"uptime" : 23,
+	"uptimeMillis" : NumberLong(23215),
+	"uptimeEstimate" : 21,
+	"localTime" : ISODate("2016-03-26T04:43:01.893Z"),
+	"asserts" : {
+		"regular" : 0,
+		"warning" : 0,
+		"msg" : 0,
+		"user" : 0,
+		"rollovers" : 0
+	},
+	"backgroundFlushing" : {
+		"flushes" : 0,
+		"total_ms" : 0,
+		"average_ms" : 0,
+		"last_ms" : 0,
+		"last_finished" : ISODate("1970-01-01T00:00:00Z")
+	},
+	"connections" : {
+		"current" : 4,
+		"available" : 2044,
+		"totalCreated" : NumberLong(10)
+	},
+	"cursors" : {
+		"note" : "deprecated, use server status metrics",
+		"clientCursors_size" : 0,
+		"totalOpen" : 0,
+		"pinned" : 0,
+		"totalNoTimeout" : 0,
+		"timedOut" : 0
+	},
+	"dur" : {
+		"commits" : 24,
+		"journaledMB" : 0.016384,
+		"writeToDataFilesMB" : 0.029623,
+		"compression" : 0.5431640365999204,
+		"commitsInWriteLock" : 0,
+		"earlyCommits" : 0,
+		"timeMs" : {
+			"dt" : 3012,
+			"prepLogBuffer" : 0,
+			"writeToJournal" : 0,
+			"writeToDataFiles" : 0,
+			"remapPrivateView" : 0,
+			"commits" : 354,
+			"commitsInWriteLock" : 0
+		}
+	},
+	"extra_info" : {
+		"note" : "fields vary by platform",
+		"page_faults" : 23
+	},
+	"globalLock" : {
+		"totalTime" : NumberLong(23214000),
+		"currentQueue" : {
+			"total" : 0,
+			"readers" : 0,
+			"writers" : 0
+		},
+		"activeClients" : {
+			"total" : 15,
+			"readers" : 0,
+			"writers" : 0
+		}
+	},
+	"locks" : {
+		"Global" : {
+			"acquireCount" : {
+				"r" : NumberLong(106),
+				"w" : NumberLong(15),
+				"R" : NumberLong(1),
+				"W" : NumberLong(12)
+			}
+		},
+		"MMAPV1Journal" : {
+			"acquireCount" : {
+				"r" : NumberLong(35),
+				"w" : NumberLong(38),
+				"R" : NumberLong(207)
+			},
+			"acquireWaitCount" : {
+				"w" : NumberLong(2),
+				"R" : NumberLong(2)
+			},
+			"timeAcquiringMicros" : {
+				"w" : NumberLong(108),
+				"R" : NumberLong(358590)
+			}
+		},
+		"Database" : {
+			"acquireCount" : {
+				"r" : NumberLong(38),
+				"w" : NumberLong(4),
+				"R" : NumberLong(1),
+				"W" : NumberLong(11)
+			},
+			"acquireWaitCount" : {
+				"W" : NumberLong(1)
+			},
+			"timeAcquiringMicros" : {
+				"W" : NumberLong(77)
+			}
+		},
+		"Collection" : {
+			"acquireCount" : {
+				"R" : NumberLong(37)
+			}
+		},
+		"Metadata" : {
+			"acquireCount" : {
+				"W" : NumberLong(9)
+			}
+		},
+		"oplog" : {
+			"acquireCount" : {
+				"w" : NumberLong(4),
+				"R" : NumberLong(1)
+			}
+		}
+	},
+	"network" : {
+		"bytesIn" : 5192,
+		"bytesOut" : 12724,
+		"numRequests" : 38
+	},
+	"opcounters" : {
+		"insert" : 0,
+		"query" : 5,
+		"update" : 0,
+		"delete" : 0,
+		"getmore" : 0,
+		"command" : 34
+	},
+	"opcountersRepl" : {
+		"insert" : 0,
+		"query" : 0,
+		"update" : 0,
+		"delete" : 0,
+		"getmore" : 0,
+		"command" : 0
+	},
+	"repl" : {
+		"setName" : "test",
+		"setVersion" : 4,
+		"ismaster" : true,
+		"secondary" : false,
+		"hosts" : [
+			"telecaster.local:28000",
+			"telecaster.local:28001",
+			"telecaster.local:28002"
+		],
+		"arbiters" : [
+			"telecaster.local:28003"
+		],
+		"primary" : "telecaster.local:28000",
+		"me" : "telecaster.local:28000",
+		"electionId" : ObjectId("56f61353e346cfca4e8f7d76"),
+		"rbid" : 1880571811
+	},
+	"storageEngine" : {
+		"name" : "mmapv1"
+	},
+	"writeBacksQueued" : false,
+	"mem" : {
+		"bits" : 64,
+		"resident" : 46,
+		"virtual" : 3188,
+		"supported" : true,
+		"mapped" : 336,
+		"mappedWithJournal" : 672
+	},
+	"metrics" : {
+		"commands" : {
+			"<UNKNOWN>" : NumberLong(0),
+			"_getUserCacheGeneration" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"_isSelf" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(5)
+			},
+			"_mergeAuthzCollections" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"_migrateClone" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"_recvChunkAbort" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"_recvChunkCommit" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"_recvChunkStart" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"_recvChunkStatus" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"_transferMods" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"aggregate" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"appendOplogNote" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"applyOps" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"authSchemaUpgrade" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"authenticate" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"availableQueryOptions" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"buildInfo" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"checkShardingIndex" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"cleanupOrphaned" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"clone" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"cloneCollection" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"cloneCollectionAsCapped" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"collMod" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"collStats" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"compact" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"connPoolStats" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"connPoolSync" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"connectionStatus" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"convertToCapped" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"copydb" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"copydbgetnonce" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"copydbsaslstart" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"count" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(4)
+			},
+			"create" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"createIndexes" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"createRole" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"createUser" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"currentOpCtx" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"cursorInfo" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dataSize" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dbHash" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dbStats" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"delete" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"diagLogging" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"distinct" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"driverOIDTest" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"drop" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dropAllRolesFromDatabase" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dropAllUsersFromDatabase" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dropDatabase" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dropIndexes" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dropRole" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"dropUser" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"eval" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"explain" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"features" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"filemd5" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"find" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"findAndModify" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"forceerror" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"fsync" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"geoNear" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"geoSearch" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getCmdLineOpts" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getLastError" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getLog" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getParameter" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getPrevError" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getShardMap" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getShardVersion" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"getnonce" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"grantPrivilegesToRole" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"grantRolesToRole" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"grantRolesToUser" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"group" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"handshake" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"hostInfo" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(2)
+			},
+			"insert" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"invalidateUserCache" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"isMaster" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"listCollections" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"listCommands" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"listDatabases" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"listIndexes" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"logRotate" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"logout" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"mapReduce" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"mapreduce" : {
+				"shardedfinish" : {
+					"failed" : NumberLong(0),
+					"total" : NumberLong(0)
+				}
+			},
+			"medianKey" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"mergeChunks" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"moveChunk" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"parallelCollectionScan" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"ping" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"planCacheClear" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"planCacheClearFilters" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"planCacheListFilters" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"planCacheListPlans" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"planCacheListQueryShapes" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"planCacheSetFilter" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"profile" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"reIndex" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"renameCollection" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"repairCursor" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"repairDatabase" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetElect" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetFreeze" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetFresh" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetGetConfig" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(4)
+			},
+			"replSetGetRBID" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetGetStatus" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetHeartbeat" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(11)
+			},
+			"replSetInitiate" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(1)
+			},
+			"replSetMaintenance" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetReconfig" : {
+				"failed" : NumberLong(1),
+				"total" : NumberLong(4)
+			},
+			"replSetStepDown" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetSyncFrom" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"replSetUpdatePosition" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"resetError" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"resync" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"revokePrivilegesFromRole" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"revokeRolesFromRole" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"revokeRolesFromUser" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"rolesInfo" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"saslContinue" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"saslStart" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"serverStatus" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(1)
+			},
+			"setParameter" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"setShardVersion" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"shardConnPoolStats" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"shardingState" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"shutdown" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"splitChunk" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"splitVector" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"top" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"touch" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"unsetSharding" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"update" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"updateRole" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"updateUser" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"usersInfo" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"validate" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"whatsmyuri" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(2)
+			},
+			"writebacklisten" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			}
+		},
+		"cursor" : {
+			"timedOut" : NumberLong(0),
+			"open" : {
+				"noTimeout" : NumberLong(0),
+				"pinned" : NumberLong(0),
+				"total" : NumberLong(0)
+			}
+		},
+		"document" : {
+			"deleted" : NumberLong(0),
+			"inserted" : NumberLong(0),
+			"returned" : NumberLong(4),
+			"updated" : NumberLong(0)
+		},
+		"getLastError" : {
+			"wtime" : {
+				"num" : 0,
+				"totalMillis" : 0
+			},
+			"wtimeouts" : NumberLong(0)
+		},
+		"operation" : {
+			"fastmod" : NumberLong(0),
+			"idhack" : NumberLong(0),
+			"scanAndOrder" : NumberLong(0),
+			"writeConflicts" : NumberLong(0)
+		},
+		"queryExecutor" : {
+			"scanned" : NumberLong(0),
+			"scannedObjects" : NumberLong(4)
+		},
+		"record" : {
+			"moves" : NumberLong(1)
+		},
+		"repl" : {
+			"apply" : {
+				"batches" : {
+					"num" : 0,
+					"totalMillis" : 0
+				},
+				"ops" : NumberLong(0)
+			},
+			"buffer" : {
+				"count" : NumberLong(0),
+				"maxSizeBytes" : 268435456,
+				"sizeBytes" : NumberLong(0)
+			},
+			"network" : {
+				"bytes" : NumberLong(0),
+				"getmores" : {
+					"num" : 0,
+					"totalMillis" : 0
+				},
+				"ops" : NumberLong(0),
+				"readersCreated" : NumberLong(1)
+			},
+			"preload" : {
+				"docs" : {
+					"num" : 0,
+					"totalMillis" : 0
+				},
+				"indexes" : {
+					"num" : 0,
+					"totalMillis" : 0
+				}
+			}
+		},
+		"storage" : {
+			"freelist" : {
+				"search" : {
+					"bucketExhausted" : NumberLong(0),
+					"requests" : NumberLong(22),
+					"scanned" : NumberLong(0)
+				}
+			}
+		},
+		"ttl" : {
+			"deletedDocuments" : NumberLong(0),
+			"passes" : NumberLong(0)
+		}
+	},
+	"ok" : 1
+}
+
+# Server Parameters #########################################
+
+{
+	"authSchemaVersion" : 5,
+	"authenticationMechanisms" : [
+		"MONGODB-CR",
+		"MONGODB-X509",
+		"SCRAM-SHA-1"
+	],
+	"clusterAuthMode" : "undefined",
+	"connPoolMaxConnsPerHost" : 200,
+	"connPoolMaxShardedConnsPerHost" : 200,
+	"cursorTimeoutMillis" : 600000,
+	"enableCollectionLocking" : true,
+	"enableLocalhostAuthBypass" : true,
+	"enableTestCommands" : 0,
+	"failIndexKeyTooLong" : true,
+	"internalGeoNearQuery2DMaxCoveringCells" : 16,
+	"internalGeoPredicateQuery2DMaxCoveringCells" : 16,
+	"internalQueryCacheEvictionRatio" : 10,
+	"internalQueryCacheFeedbacksStored" : 20,
+	"internalQueryCacheReplanningEnabled" : false,
+	"internalQueryCacheSize" : 5000,
+	"internalQueryCacheStdDeviations" : 2,
+	"internalQueryCacheWriteOpsBetweenFlush" : 1000,
+	"internalQueryEnumerationMaxIntersectPerAnd" : 3,
+	"internalQueryEnumerationMaxOrSolutions" : 10,
+	"internalQueryExecMaxBlockingSortBytes" : 33554432,
+	"internalQueryExecYieldIterations" : 128,
+	"internalQueryExecYieldPeriodMS" : 10,
+	"internalQueryForceIntersectionPlans" : false,
+	"internalQueryMaxScansToExplode" : 200,
+	"internalQueryPlanEvaluationCollFraction" : 0.3,
+	"internalQueryPlanEvaluationMaxResults" : 101,
+	"internalQueryPlanEvaluationWorks" : 10000,
+	"internalQueryPlanOrChildrenIndependently" : true,
+	"internalQueryPlannerEnableHashIntersection" : false,
+	"internalQueryPlannerEnableIndexIntersection" : true,
+	"internalQueryPlannerMaxIndexedSolutions" : 64,
+	"internalSCCAllowFastestAuthConfigReads" : false,
+	"internalSCCAllowFastestMetadataConfigReads" : false,
+	"journalCommitInterval" : 0,
+	"logComponentVerbosity" : {
+		"verbosity" : 0,
+		"accessControl" : {
+			"verbosity" : -1
+		},
+		"command" : {
+			"verbosity" : -1
+		},
+		"control" : {
+			"verbosity" : -1
+		},
+		"geo" : {
+			"verbosity" : -1
+		},
+		"index" : {
+			"verbosity" : -1
+		},
+		"network" : {
+			"verbosity" : -1
+		},
+		"query" : {
+			"verbosity" : -1
+		},
+		"replication" : {
+			"verbosity" : -1
+		},
+		"sharding" : {
+			"verbosity" : -1
+		},
+		"storage" : {
+			"verbosity" : -1,
+			"journal" : {
+				"verbosity" : -1
+			}
+		},
+		"write" : {
+			"verbosity" : -1
+		}
+	},
+	"logLevel" : 0,
+	"logUserIds" : false,
+	"maxSyncSourceLagSecs" : 30,
+	"newCollectionsUsePowerOf2Sizes" : true,
+	"notablescan" : false,
+	"queueForMigrationCommit" : true,
+	"quiet" : false,
+	"replApplyBatchSize" : 1,
+	"replIndexPrefetch" : "all",
+	"replMonitorMaxFailedChecks" : 30,
+	"saslHostName" : "telecaster.local",
+	"saslServiceName" : "mongodb",
+	"saslauthdPath" : "",
+	"scramIterationCount" : 10000,
+	"skipCorruptDocumentsWhenCloning" : false,
+	"sslMode" : "disabled",
+	"syncdelay" : 60,
+	"textSearchEnabled" : true,
+	"traceExceptions" : false,
+	"traceWriteConflictExceptions" : false,
+	"ttlMonitorEnabled" : true,
+	"ttlMonitorSleepSecs" : 60,
+	"wiredTigerConcurrentReadTransactions" : 128,
+	"wiredTigerConcurrentWriteTransactions" : 128,
+	"ok" : 1
+}
+
+# Command Line Options ######################################
+
+{
+	"argv" : [
+		"mongod",
+		"--dbpath",
+		"/Users/fernandoipar/mongo-summary-tests//primary",
+		"--port=28000",
+		"--logpath",
+		"/Users/fernandoipar/mongo-summary-tests//primary/log",
+		"--fork",
+		"--pidfilepath",
+		"/Users/fernandoipar/mongo-summary-tests//primary/pid",
+		"--replSet",
+		"test"
+	],
+	"parsed" : {
+		"net" : {
+			"port" : 28000
+		},
+		"processManagement" : {
+			"fork" : true,
+			"pidFilePath" : "/Users/fernandoipar/mongo-summary-tests//primary/pid"
+		},
+		"replication" : {
+			"replSet" : "test"
+		},
+		"storage" : {
+			"dbPath" : "/Users/fernandoipar/mongo-summary-tests//primary"
+		},
+		"systemLog" : {
+			"destination" : "file",
+			"path" : "/Users/fernandoipar/mongo-summary-tests//primary/log"
+		}
+	},
+	"ok" : 1
+}
+MongoDB shell version: 3.0.4
+connecting to: 127.0.0.1:28000/test
+
+# Extra info ################################################
+
+local has 5 collections and 352321536 bytes on disk
+Collections: 
+   me
+Indexes for me:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.me"
+	}
+]
+Indexes for oplog.rs:
+[ ]
+Indexes for startup_log:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.startup_log"
+	}
+]
+Indexes for system.indexes:
+[ ]
+Indexes for system.replset:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.system.replset"
+	}
+]
+   oplog.rs
+Indexes for me:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.me"
+	}
+]
+Indexes for oplog.rs:
+[ ]
+Indexes for startup_log:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.startup_log"
+	}
+]
+Indexes for system.indexes:
+[ ]
+Indexes for system.replset:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.system.replset"
+	}
+]
+   startup_log
+Indexes for me:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.me"
+	}
+]
+Indexes for oplog.rs:
+[ ]
+Indexes for startup_log:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.startup_log"
+	}
+]
+Indexes for system.indexes:
+[ ]
+Indexes for system.replset:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.system.replset"
+	}
+]
+   system.indexes
+Indexes for me:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.me"
+	}
+]
+Indexes for oplog.rs:
+[ ]
+Indexes for startup_log:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.startup_log"
+	}
+]
+Indexes for system.indexes:
+[ ]
+Indexes for system.replset:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.system.replset"
+	}
+]
+   system.replset
+Indexes for me:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.me"
+	}
+]
+Indexes for oplog.rs:
+[ ]
+Indexes for startup_log:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.startup_log"
+	}
+]
+Indexes for system.indexes:
+[ ]
+Indexes for system.replset:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "local.system.replset"
+	}
+]
+{
+	"set" : "test",
+	"date" : ISODate("2016-03-26T04:43:01.963Z"),
+	"myState" : 1,
+	"members" : [
+		{
+			"_id" : 0,
+			"name" : "telecaster.local:28000",
+			"health" : 1,
+			"state" : 1,
+			"stateStr" : "PRIMARY",
+			"uptime" : 23,
+			"optime" : Timestamp(1458967379, 5),
+			"optimeDate" : ISODate("2016-03-26T04:42:59Z"),
+			"electionTime" : Timestamp(1458967379, 2),
+			"electionDate" : ISODate("2016-03-26T04:42:59Z"),
+			"configVersion" : 4,
+			"self" : true
+		},
+		{
+			"_id" : 1,
+			"name" : "telecaster.local:28001",
+			"health" : 1,
+			"state" : 5,
+			"stateStr" : "STARTUP2",
+			"uptime" : 2,
+			"optime" : Timestamp(0, 0),
+			"optimeDate" : ISODate("1970-01-01T00:00:00Z"),
+			"lastHeartbeat" : ISODate("2016-03-26T04:43:01.838Z"),
+			"lastHeartbeatRecv" : ISODate("2016-03-26T04:43:01.834Z"),
+			"pingMs" : 0,
+			"configVersion" : 4
+		},
+		{
+			"_id" : 2,
+			"name" : "telecaster.local:28002",
+			"health" : 1,
+			"state" : 5,
+			"stateStr" : "STARTUP2",
+			"uptime" : 2,
+			"optime" : Timestamp(0, 0),
+			"optimeDate" : ISODate("1970-01-01T00:00:00Z"),
+			"lastHeartbeat" : ISODate("2016-03-26T04:43:01.838Z"),
+			"lastHeartbeatRecv" : ISODate("2016-03-26T04:43:01.844Z"),
+			"pingMs" : 0,
+			"configVersion" : 4
+		},
+		{
+			"_id" : 3,
+			"name" : "telecaster.local:28003",
+			"health" : 1,
+			"state" : 7,
+			"stateStr" : "ARBITER",
+			"uptime" : 2,
+			"lastHeartbeat" : ISODate("2016-03-26T04:43:01.837Z"),
+			"lastHeartbeatRecv" : ISODate("2016-03-26T04:43:01.844Z"),
+			"pingMs" : 0,
+			"configVersion" : 4
+		}
+	],
+	"ok" : 1
+}
+
+# Logs ######################################################
+
+2016-03-26T01:42:38.715-0300 I JOURNAL  [initandlisten] journal dir=/Users/fernandoipar/mongo-summary-tests//primary/journal
+2016-03-26T01:42:38.715-0300 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
+2016-03-26T01:42:38.731-0300 I JOURNAL  [durability] Durability thread started
+2016-03-26T01:42:38.731-0300 I JOURNAL  [journal writer] Journal writer thread started
+2016-03-26T01:42:38.731-0300 I CONTROL  [initandlisten] MongoDB starting : pid=20757 port=28000 dbpath=/Users/fernandoipar/mongo-summary-tests//primary 64-bit host=telecaster.local
+2016-03-26T01:42:38.731-0300 I CONTROL  [initandlisten] db version v3.0.4
+2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] git version: nogitversion
+2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] build info: Darwin yosemitevm.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05 PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64 BOOST_LIB_VERSION=1_49
+2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] allocator: system
+2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] options: { net: { port: 28000 }, processManagement: { fork: true, pidFilePath: "/Users/fernandoipar/mongo-summary-tests//primary/pid" }, replication: { replSet: "test" }, storage: { dbPath: "/Users/fernandoipar/mongo-summary-tests//primary" }, systemLog: { destination: "file", path: "/Users/fernandoipar/mongo-summary-tests//primary/log" } }
+2016-03-26T01:42:38.732-0300 I INDEX    [initandlisten] allocating new ns file /Users/fernandoipar/mongo-summary-tests//primary/local.ns, filling with zeroes...
+2016-03-26T01:42:38.764-0300 I STORAGE  [FileAllocator] allocating new datafile /Users/fernandoipar/mongo-summary-tests//primary/local.0, filling with zeroes...
+2016-03-26T01:42:38.764-0300 I STORAGE  [FileAllocator] creating directory /Users/fernandoipar/mongo-summary-tests//primary/_tmp
+2016-03-26T01:42:38.857-0300 I STORAGE  [FileAllocator] done allocating datafile /Users/fernandoipar/mongo-summary-tests//primary/local.0, size: 64MB,  took 0.093 secs
+2016-03-26T01:42:38.884-0300 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-03-26T01:42:38.886-0300 I NETWORK  [initandlisten] waiting for connections on port 28000
+2016-03-26T01:42:58.998-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:53931 #1 (1 connection now open)
+2016-03-26T01:42:58.999-0300 I COMMAND  [conn1] replSet info initiate : no configuration specified.  Using a default configuration for the set
+2016-03-26T01:42:58.999-0300 I COMMAND  [conn1] replSet created this configuration for initiation : { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000" } ] }
+2016-03-26T01:42:59.000-0300 I REPL     [conn1] replSetInitiate admin command received from client
+2016-03-26T01:42:59.408-0300 I REPL     [conn1] replSet replSetInitiate config object with 1 members parses ok
+2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] transition to STARTUP2
+2016-03-26T01:42:59.412-0300 I REPL     [conn1] ******
+2016-03-26T01:42:59.412-0300 I REPL     [conn1] creating replication oplog of size: 192MB...
+2016-03-26T01:42:59.413-0300 I STORAGE  [FileAllocator] allocating new datafile /Users/fernandoipar/mongo-summary-tests//primary/local.1, filling with zeroes...
+2016-03-26T01:42:59.789-0300 I STORAGE  [FileAllocator] done allocating datafile /Users/fernandoipar/mongo-summary-tests//primary/local.1, size: 256MB,  took 0.376 secs
+2016-03-26T01:42:59.818-0300 I REPL     [conn1] ******
+2016-03-26T01:42:59.818-0300 I REPL     [conn1] Starting replication applier threads
+2016-03-26T01:42:59.818-0300 I COMMAND  [conn1] command admin.$cmd command: replSetInitiate { replSetInitiate: undefined } keyUpdates:0 writeConflicts:0 numYields:0 reslen:131 locks:{ Global: { acquireCount: { r: 5, w: 3, W: 2 } }, MMAPV1Journal: { acquireCount: { w: 7 }, acquireWaitCount: { w: 1 }, timeAcquiringMicros: { w: 55 } }, Database: { acquireCount: { w: 1, W: 2 } }, Metadata: { acquireCount: { W: 3 } }, oplog: { acquireCount: { w: 1 } } } 819ms
+2016-03-26T01:42:59.818-0300 I REPL     [ReplicationExecutor] transition to RECOVERING
+2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to SECONDARY
+2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to PRIMARY
+2016-03-26T01:42:59.820-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T01:42:59.820-0300 E REPL     [conn1] replSetReconfig got BadValue Found two member configurations with same host field, members.0.host == members.1.host == telecaster.local:28000 while validating { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1.0, host: "telecaster.local:28000" } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastE
+2016-03-26T01:42:59.822-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T01:42:59.823-0300 I REPL     [conn1] replSetReconfig config object with 2 members parses ok
+2016-03-26T01:42:59.824-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: 
+2016-03-26T01:42:59.824-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53934 #2 (2 connections now open)
+2016-03-26T01:42:59.825-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T01:42:59.825-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP
+2016-03-26T01:42:59.826-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53935 #3 (3 connections now open)
+2016-03-26T01:42:59.826-0300 I NETWORK  [conn3] end connection 192.168.0.2:53935 (2 connections now open)
+2016-03-26T01:42:59.826-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T01:42:59.828-0300 I REPL     [conn1] replSetReconfig config object with 3 members parses ok
+2016-03-26T01:42:59.829-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 3, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T01:42:59.830-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T01:42:59.830-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53939 #4 (3 connections now open)
+2016-03-26T01:42:59.830-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP2
+2016-03-26T01:42:59.831-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP
+2016-03-26T01:42:59.831-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T01:42:59.831-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53940 #5 (4 connections now open)
+2016-03-26T01:42:59.832-0300 I NETWORK  [conn5] end connection 192.168.0.2:53940 (3 connections now open)
+2016-03-26T01:42:59.834-0300 I REPL     [conn1] replSetReconfig config object with 4 members parses ok
+2016-03-26T01:42:59.835-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 4, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T01:42:59.835-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T01:42:59.836-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53946 #6 (4 connections now open)
+2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state STARTUP
+2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP2
+2016-03-26T01:42:59.837-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53948 #7 (5 connections now open)
+2016-03-26T01:42:59.837-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53949 #8 (6 connections now open)
+2016-03-26T01:42:59.838-0300 I NETWORK  [conn1] end connection 127.0.0.1:53931 (4 connections now open)
+2016-03-26T01:42:59.838-0300 I NETWORK  [conn7] end connection 192.168.0.2:53948 (4 connections now open)
+2016-03-26T01:42:59.838-0300 I NETWORK  [conn8] end connection 192.168.0.2:53949 (4 connections now open)
+2016-03-26T01:43:00.823-0300 I REPL     [rsSync] transition to primary complete; database writes are now permitted
+2016-03-26T01:43:01.831-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53957 #9 (4 connections now open)
+2016-03-26T01:43:01.831-0300 I NETWORK  [conn9] end connection 192.168.0.2:53957 (3 connections now open)
+2016-03-26T01:43:01.837-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state ARBITER
+2016-03-26T01:43:01.890-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:53962 #10 (4 connections now open)
+2016-03-26T01:43:01.909-0300 I NETWORK  [conn10] end connection 127.0.0.1:53962 (3 connections now open)
+2016-03-26T01:43:01.949-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:53963 #11 (4 connections now open)
+2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] transition to STARTUP2
+2016-03-26T01:42:59.818-0300 I REPL     [ReplicationExecutor] transition to RECOVERING
+2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to SECONDARY
+2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to PRIMARY
+2016-03-26T01:42:59.824-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: 
+2016-03-26T01:42:59.825-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP
+2016-03-26T01:42:59.829-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 3, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T01:42:59.830-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP2
+2016-03-26T01:42:59.831-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP
+2016-03-26T01:42:59.835-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 4, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state STARTUP
+2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP2
+2016-03-26T01:43:00.823-0300 I REPL     [rsSync] transition to primary complete; database writes are now permitted
+2016-03-26T01:43:01.837-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state ARBITER

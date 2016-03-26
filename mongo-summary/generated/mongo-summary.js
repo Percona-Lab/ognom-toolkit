@@ -17,44 +17,6 @@ var FILLER = "#";
 function isMongos() {
     return db.runCommand({isMaster: 1})["msg"] == "isdbgrid";
 }
-function convertToText(obj) {
-    //create an array that will later be joined into a string.
-    var string = [];
-
-    //is object
-    //    Both arrays and objects seem to return "object"
-    //    when typeof(obj) is applied to them. So instead
-    //    I am checking to see if they have the property
-    //    join, which normal objects don't have but
-    //    arrays do.
-    if (obj == undefined) {
-    	return String(obj);
-    } else if (typeof(obj) == "object" && (obj.join == undefined)) {
-        for (prop in obj) {
-        	if (obj.hasOwnProperty(prop))
-            string.push(prop + ": " + convertToText(obj[prop]));
-        };
-    return "{" + string.join(",") + "}\n";
-
-    //is array
-    } else if (typeof(obj) == "object" && !(obj.join == undefined)) {
-        for(prop in obj) {
-            string.push(convertToText(obj[prop]));
-        }
-    return "[" + string.join(",") + "]\n";
-
-    //is function
-    } else if (typeof(obj) == "function") {
-        string.push(obj.toString())
-
-    //all other values can be done with JSON.stringify
-    } else {
-        string.push(obj)
-        //string.push(JSON.stringify(obj))
-    }
-
-    return string.join(",");
-}
 
 function getInstanceBasicInfo(db) {
     var result = {}
@@ -64,9 +26,9 @@ function getInstanceBasicInfo(db) {
     aux = db.currentOp()["inprog"]
     result["inprog"] = aux.length + " operations in progress"
     result["hostname"] = db.hostInfo()["system"]["hostname"]
-    result["serverStatus"] = convertToText(db._adminCommand({serverStatus:1}))
-    result["parameters"] = convertToText(db._adminCommand({getParameter:'*'}))
-    result["cmdLineOpts"] = convertToText(db._adminCommand({getCmdLineOpts:1}))
+    result["serverStatus"] = db._adminCommand({serverStatus:1})
+    result["parameters"] = db._adminCommand({getParameter:'*'})
+    result["cmdLineOpts"] = db._adminCommand({getCmdLineOpts:1})
     return result
 }
 
@@ -78,8 +40,10 @@ function getReplicationSummary(db) {
         // This is either not a replica set, or there is an error
         if (rstatus["errmsg"] == "not running with --replSet") {
            result["summary"] = "Standalone mongod" 
+           result["summaryExtra"] = ""
         } else {
             result["summary"] = "Replication error: " + rstatus["errmsg"]
+            result["summaryExtra"] = ""
         }
         result["members"] = [];
     } else {
@@ -160,13 +124,13 @@ print("Report generated on " + basicInfo["hostname"] + " at " + basicInfo["serve
 print(basicInfo["inprog"]);
 if (isMongos()) {
     print(getHeader("Sharding Summary (mongos detected)",FILLER,LENGTH));
-    basicInfo = getShardingSummary();
-    print("Detected " + basicInfo["shards"].length + " shards");
+    shardsInfo = getShardingSummary();
+    print("Detected " + shardsInfo["shards"].length + " shards");
     print("Sharded databases: ");
-    basicInfo["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+    shardsInfo["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
     print("");
     print("Unsharded databases: ");
-    basicInfo["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+    shardsInfo["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
     print("");
     print(getHeader("Shards detail",FILLER,LENGTH));
     getShardsInfo()["shards"].forEach(
@@ -199,8 +163,8 @@ if (isMongos()) {
     }
 } 
 print(getHeader("Server Status",FILLER,LENGTH))
-print(basicInfo["serverStatus"]);
+printjson(basicInfo["serverStatus"]);
 print(getHeader("Server Parameters",FILLER,LENGTH))
-print(basicInfo["parameters"]);
+printjson(basicInfo["parameters"]);
 print(getHeader("Command Line Options",FILLER,LENGTH))
-print(basicInfo["cmdLineOpts"]);
+printjson(basicInfo["cmdLineOpts"]);

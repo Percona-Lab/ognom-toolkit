@@ -1,26 +1,55 @@
 MongoDB shell version: 3.0.4
-connecting to: 127.0.0.1:28000/test
+connecting to: 127.0.0.1:28007/test
 
 # Percona Toolkit MongoDB Summary Report ####################
 
-Report generated on telecaster.local:28000 at 2016-02-06 02:43:57 GMT-0300 (ART)
+Report generated on telecaster.local:28007 at 2016-02-06 02:43:24 GMT-0300 (ART)
 0 operations in progress
 
-# Replication summary #######################################
+# Sharding Summary (mongos detected) ########################
 
-Standalone mongod
+Detected 2 shards
+Sharded databases: 
+  test
+
+Unsharded databases: 
+  admin
+
+
+# Shards detail #############################################
+
+Shard undefined @ telecaster.local:28000
+(0 operations in progress)
+Node is PRIMARY in a 2 members replica set
+The set has 0 secondaries and 0 arbiters
+
+Shard undefined @ telecaster.local:28001
+(0 operations in progress)
+Node is STARTUP2 in a 2 members replica set
+The set has 0 secondaries and 0 arbiters
+
+Shard undefined @ telecaster.local:28002
+(0 operations in progress)
+Node is PRIMARY in a 2 members replica set
+The set has 0 secondaries and 0 arbiters
+
+Shard undefined @ telecaster.local:28003
+(0 operations in progress)
+Node is STARTUP2 in a 2 members replica set
+The set has 0 secondaries and 0 arbiters
+
 
 # Server Status #############################################
 
 {
-	"host" : "telecaster.local:28000",
+	"host" : "telecaster.local:28007",
 	"version" : "3.0.4",
-	"process" : "mongod",
-	"pid" : NumberLong(23024),
-	"uptime" : 5,
-	"uptimeMillis" : NumberLong(5103),
-	"uptimeEstimate" : 4,
-	"localTime" : ISODate("2016-03-26T05:43:57.882Z"),
+	"process" : "mongos",
+	"pid" : NumberLong(22978),
+	"uptime" : 12,
+	"uptimeMillis" : NumberLong(11971),
+	"uptimeEstimate" : 10,
+	"localTime" : ISODate("2016-03-26T05:43:24.360Z"),
 	"asserts" : {
 		"regular" : 0,
 		"warning" : 0,
@@ -28,132 +57,33 @@ Standalone mongod
 		"user" : 0,
 		"rollovers" : 0
 	},
-	"backgroundFlushing" : {
-		"flushes" : 0,
-		"total_ms" : 0,
-		"average_ms" : 0,
-		"last_ms" : 0,
-		"last_finished" : ISODate("1970-01-01T00:00:00Z")
-	},
 	"connections" : {
 		"current" : 1,
 		"available" : 2047,
-		"totalCreated" : NumberLong(1)
-	},
-	"cursors" : {
-		"note" : "deprecated, use server status metrics",
-		"clientCursors_size" : 0,
-		"totalOpen" : 0,
-		"pinned" : 0,
-		"totalNoTimeout" : 0,
-		"timedOut" : 0
-	},
-	"dur" : {
-		"commits" : 28,
-		"journaledMB" : 0.024576,
-		"writeToDataFilesMB" : 0.021399,
-		"compression" : 1.1306067994663478,
-		"commitsInWriteLock" : 0,
-		"earlyCommits" : 0,
-		"timeMs" : {
-			"dt" : 3002,
-			"prepLogBuffer" : 0,
-			"writeToJournal" : 0,
-			"writeToDataFiles" : 0,
-			"remapPrivateView" : 0,
-			"commits" : 2,
-			"commitsInWriteLock" : 0
-		}
+		"totalCreated" : NumberLong(6)
 	},
 	"extra_info" : {
 		"note" : "fields vary by platform",
-		"page_faults" : 10
-	},
-	"globalLock" : {
-		"totalTime" : NumberLong(5102000),
-		"currentQueue" : {
-			"total" : 0,
-			"readers" : 0,
-			"writers" : 0
-		},
-		"activeClients" : {
-			"total" : 9,
-			"readers" : 0,
-			"writers" : 0
-		}
-	},
-	"locks" : {
-		"Global" : {
-			"acquireCount" : {
-				"r" : NumberLong(21),
-				"w" : NumberLong(2),
-				"W" : NumberLong(5)
-			}
-		},
-		"MMAPV1Journal" : {
-			"acquireCount" : {
-				"r" : NumberLong(5),
-				"w" : NumberLong(10),
-				"R" : NumberLong(46)
-			},
-			"acquireWaitCount" : {
-				"w" : NumberLong(1),
-				"R" : NumberLong(1)
-			},
-			"timeAcquiringMicros" : {
-				"w" : NumberLong(38),
-				"R" : NumberLong(1298)
-			}
-		},
-		"Database" : {
-			"acquireCount" : {
-				"r" : NumberLong(7),
-				"W" : NumberLong(2)
-			}
-		},
-		"Collection" : {
-			"acquireCount" : {
-				"R" : NumberLong(7)
-			}
-		},
-		"Metadata" : {
-			"acquireCount" : {
-				"W" : NumberLong(4)
-			}
-		}
+		"page_faults" : 0
 	},
 	"network" : {
-		"bytesIn" : 238,
-		"bytesOut" : 2010,
-		"numRequests" : 4
+		"bytesIn" : 1008,
+		"bytesOut" : 3091,
+		"numRequests" : 15
 	},
 	"opcounters" : {
-		"insert" : 0,
-		"query" : 1,
-		"update" : 0,
-		"delete" : 0,
-		"getmore" : 0,
-		"command" : 4
-	},
-	"opcountersRepl" : {
 		"insert" : 0,
 		"query" : 0,
 		"update" : 0,
 		"delete" : 0,
 		"getmore" : 0,
-		"command" : 0
+		"command" : 15
 	},
-	"storageEngine" : {
-		"name" : "mmapv1"
-	},
-	"writeBacksQueued" : false,
 	"mem" : {
 		"bits" : 64,
-		"resident" : 45,
-		"virtual" : 2654,
-		"supported" : true,
-		"mapped" : 80,
-		"mappedWithJournal" : 160
+		"resident" : 5,
+		"virtual" : 2420,
+		"supported" : true
 	},
 	"metrics" : {
 		"commands" : {
@@ -170,35 +100,11 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"_migrateClone" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"_recvChunkAbort" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"_recvChunkCommit" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"_recvChunkStart" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"_recvChunkStatus" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"_transferMods" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
+			"addShard" : {
+				"failed" : NumberLong(2),
+				"total" : NumberLong(4)
 			},
 			"aggregate" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"appendOplogNote" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -219,26 +125,6 @@ Standalone mongod
 				"total" : NumberLong(0)
 			},
 			"buildInfo" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"checkShardingIndex" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"cleanupOrphaned" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"clone" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"cloneCollection" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"cloneCollectionAsCapped" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -274,14 +160,6 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"copydbgetnonce" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"copydbsaslstart" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"count" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
@@ -302,19 +180,11 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"currentOpCtx" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"cursorInfo" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
 			"dataSize" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"dbHash" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -326,15 +196,7 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"diagLogging" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"distinct" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"driverOIDTest" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -366,6 +228,10 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
+			"enableSharding" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(1)
+			},
 			"eval" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
@@ -390,6 +256,10 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
+			"flushRouterConfig" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
 			"forceerror" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
@@ -399,10 +269,6 @@ Standalone mongod
 				"total" : NumberLong(0)
 			},
 			"geoNear" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"geoSearch" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -454,10 +320,6 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"handshake" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"hostInfo" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(2)
@@ -471,6 +333,10 @@ Standalone mongod
 				"total" : NumberLong(0)
 			},
 			"isMaster" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(1)
+			},
+			"isdbgrid" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -490,6 +356,10 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
+			"listShards" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
 			"logRotate" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
@@ -502,16 +372,6 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"mapreduce" : {
-				"shardedfinish" : {
-					"failed" : NumberLong(0),
-					"total" : NumberLong(0)
-				}
-			},
-			"medianKey" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"mergeChunks" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
@@ -520,7 +380,11 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"parallelCollectionScan" : {
+			"movePrimary" : {
+				"failed" : NumberLong(0),
+				"total" : NumberLong(0)
+			},
+			"netstat" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -560,11 +424,11 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"renameCollection" : {
+			"removeShard" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"repairCursor" : {
+			"renameCollection" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -572,63 +436,11 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"replSetElect" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetFreeze" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetFresh" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetGetConfig" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetGetRBID" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"replSetGetStatus" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"replSetHeartbeat" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetInitiate" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetMaintenance" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetReconfig" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetStepDown" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetSyncFrom" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"replSetUpdatePosition" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"resetError" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"resync" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -664,7 +476,7 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"setShardVersion" : {
+			"shardCollection" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -672,31 +484,15 @@ Standalone mongod
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"shardingState" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
 			"shutdown" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
-			"splitChunk" : {
+			"split" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
 			"splitVector" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"top" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"touch" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
-			},
-			"unsetSharding" : {
 				"failed" : NumberLong(0),
 				"total" : NumberLong(0)
 			},
@@ -722,92 +518,21 @@ Standalone mongod
 			},
 			"whatsmyuri" : {
 				"failed" : NumberLong(0),
-				"total" : NumberLong(1)
-			},
-			"writebacklisten" : {
-				"failed" : NumberLong(0),
-				"total" : NumberLong(0)
+				"total" : NumberLong(6)
 			}
 		},
 		"cursor" : {
-			"timedOut" : NumberLong(0),
 			"open" : {
-				"noTimeout" : NumberLong(0),
-				"pinned" : NumberLong(0),
+				"multiTarget" : NumberLong(0),
+				"singleTarget" : NumberLong(0),
 				"total" : NumberLong(0)
 			}
-		},
-		"document" : {
-			"deleted" : NumberLong(0),
-			"inserted" : NumberLong(0),
-			"returned" : NumberLong(0),
-			"updated" : NumberLong(0)
 		},
 		"getLastError" : {
 			"wtime" : {
 				"num" : 0,
 				"totalMillis" : 0
-			},
-			"wtimeouts" : NumberLong(0)
-		},
-		"operation" : {
-			"fastmod" : NumberLong(0),
-			"idhack" : NumberLong(0),
-			"scanAndOrder" : NumberLong(0),
-			"writeConflicts" : NumberLong(0)
-		},
-		"queryExecutor" : {
-			"scanned" : NumberLong(0),
-			"scannedObjects" : NumberLong(0)
-		},
-		"record" : {
-			"moves" : NumberLong(0)
-		},
-		"repl" : {
-			"apply" : {
-				"batches" : {
-					"num" : 0,
-					"totalMillis" : 0
-				},
-				"ops" : NumberLong(0)
-			},
-			"buffer" : {
-				"count" : NumberLong(0),
-				"maxSizeBytes" : 268435456,
-				"sizeBytes" : NumberLong(0)
-			},
-			"network" : {
-				"bytes" : NumberLong(0),
-				"getmores" : {
-					"num" : 0,
-					"totalMillis" : 0
-				},
-				"ops" : NumberLong(0),
-				"readersCreated" : NumberLong(0)
-			},
-			"preload" : {
-				"docs" : {
-					"num" : 0,
-					"totalMillis" : 0
-				},
-				"indexes" : {
-					"num" : 0,
-					"totalMillis" : 0
-				}
 			}
-		},
-		"storage" : {
-			"freelist" : {
-				"search" : {
-					"bucketExhausted" : NumberLong(0),
-					"requests" : NumberLong(8),
-					"scanned" : NumberLong(0)
-				}
-			}
-		},
-		"ttl" : {
-			"deletedDocuments" : NumberLong(0),
-			"passes" : NumberLong(0)
 		}
 	},
 	"ok" : 1
@@ -825,11 +550,9 @@ Standalone mongod
 	"clusterAuthMode" : "undefined",
 	"connPoolMaxConnsPerHost" : 200,
 	"connPoolMaxShardedConnsPerHost" : 200,
-	"cursorTimeoutMillis" : 600000,
-	"enableCollectionLocking" : true,
+	"cursorTimeoutMillis" : NumberLong(600000),
 	"enableLocalhostAuthBypass" : true,
 	"enableTestCommands" : 0,
-	"failIndexKeyTooLong" : true,
 	"internalGeoNearQuery2DMaxCoveringCells" : 16,
 	"internalGeoPredicateQuery2DMaxCoveringCells" : 16,
 	"internalQueryCacheEvictionRatio" : 10,
@@ -854,7 +577,6 @@ Standalone mongod
 	"internalQueryPlannerMaxIndexedSolutions" : 64,
 	"internalSCCAllowFastestAuthConfigReads" : false,
 	"internalSCCAllowFastestMetadataConfigReads" : false,
-	"journalCommitInterval" : 0,
 	"logComponentVerbosity" : {
 		"verbosity" : 0,
 		"accessControl" : {
@@ -896,28 +618,16 @@ Standalone mongod
 	},
 	"logLevel" : 0,
 	"logUserIds" : false,
-	"maxSyncSourceLagSecs" : 30,
-	"newCollectionsUsePowerOf2Sizes" : true,
-	"notablescan" : false,
-	"queueForMigrationCommit" : true,
 	"quiet" : false,
-	"replApplyBatchSize" : 1,
-	"replIndexPrefetch" : "uninitialized",
 	"replMonitorMaxFailedChecks" : 30,
 	"saslHostName" : "telecaster.local",
 	"saslServiceName" : "mongodb",
 	"saslauthdPath" : "",
 	"scramIterationCount" : 10000,
-	"skipCorruptDocumentsWhenCloning" : false,
 	"sslMode" : "disabled",
-	"syncdelay" : 60,
 	"textSearchEnabled" : true,
 	"traceExceptions" : false,
-	"traceWriteConflictExceptions" : false,
-	"ttlMonitorEnabled" : true,
-	"ttlMonitorSleepSecs" : 60,
-	"wiredTigerConcurrentReadTransactions" : 128,
-	"wiredTigerConcurrentWriteTransactions" : 128,
+	"userCacheInvalidationIntervalSecs" : 30,
 	"ok" : 1
 }
 
@@ -925,43 +635,43 @@ Standalone mongod
 
 {
 	"argv" : [
-		"mongod",
-		"--dbpath",
-		"/Users/fernandoipar/mongo-summary-tests//standalone",
-		"--port=28000",
+		"mongos",
+		"--port=28007",
 		"--logpath",
-		"/Users/fernandoipar/mongo-summary-tests//standalone/log",
+		"/Users/fernandoipar/mongo-summary-tests//mongos/log",
 		"--fork",
 		"--pidfilepath",
-		"/Users/fernandoipar/mongo-summary-tests//standalone/pid"
+		"/Users/fernandoipar/mongo-summary-tests//mongos/pid",
+		"--configdb",
+		"telecaster.local:28004,telecaster.local:28005,telecaster.local:28006"
 	],
 	"parsed" : {
 		"net" : {
-			"port" : 28000
+			"port" : 28007
 		},
 		"processManagement" : {
 			"fork" : true,
-			"pidFilePath" : "/Users/fernandoipar/mongo-summary-tests//standalone/pid"
+			"pidFilePath" : "/Users/fernandoipar/mongo-summary-tests//mongos/pid"
 		},
-		"storage" : {
-			"dbPath" : "/Users/fernandoipar/mongo-summary-tests//standalone"
+		"sharding" : {
+			"configDB" : "telecaster.local:28004,telecaster.local:28005,telecaster.local:28006"
 		},
 		"systemLog" : {
 			"destination" : "file",
-			"path" : "/Users/fernandoipar/mongo-summary-tests//standalone/log"
+			"path" : "/Users/fernandoipar/mongo-summary-tests//mongos/log"
 		}
 	},
 	"ok" : 1
 }
 MongoDB shell version: 3.0.4
-connecting to: 127.0.0.1:28000/test
+connecting to: 127.0.0.1:28007/test
 
 # Extra info ################################################
 
-local has 2 collections and 83886080 bytes on disk
+config has 12 collections and 16777216 bytes on disk
 Collections: 
-   startup_log
-Indexes for startup_log:
+   actionlog
+Indexes for actionlog:
 [
 	{
 		"v" : 1,
@@ -969,13 +679,10 @@ Indexes for startup_log:
 			"_id" : 1
 		},
 		"name" : "_id_",
-		"ns" : "local.startup_log"
+		"ns" : "config.actionlog"
 	}
 ]
-Indexes for system.indexes:
-[ ]
-   system.indexes
-Indexes for startup_log:
+Indexes for changelog:
 [
 	{
 		"v" : 1,
@@ -983,30 +690,183 @@ Indexes for startup_log:
 			"_id" : 1
 		},
 		"name" : "_id_",
-		"ns" : "local.startup_log"
+		"ns" : "config.changelog"
+	}
+]
+Indexes for chunks:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.chunks"
+	},
+	{
+		"v" : 1,
+		"unique" : true,
+		"key" : {
+			"ns" : 1,
+			"min" : 1
+		},
+		"name" : "ns_1_min_1",
+		"ns" : "config.chunks"
+	},
+	{
+		"v" : 1,
+		"unique" : true,
+		"key" : {
+			"ns" : 1,
+			"shard" : 1,
+			"min" : 1
+		},
+		"name" : "ns_1_shard_1_min_1",
+		"ns" : "config.chunks"
+	},
+	{
+		"v" : 1,
+		"unique" : true,
+		"key" : {
+			"ns" : 1,
+			"lastmod" : 1
+		},
+		"name" : "ns_1_lastmod_1",
+		"ns" : "config.chunks"
+	}
+]
+Indexes for databases:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.databases"
+	}
+]
+Indexes for lockpings:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.lockpings"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"ping" : 1
+		},
+		"name" : "ping_1",
+		"ns" : "config.lockpings"
+	}
+]
+Indexes for locks:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.locks"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"ts" : 1
+		},
+		"name" : "ts_1",
+		"ns" : "config.locks"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"state" : 1,
+			"process" : 1
+		},
+		"name" : "state_1_process_1",
+		"ns" : "config.locks"
+	}
+]
+Indexes for mongos:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.mongos"
+	}
+]
+Indexes for settings:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.settings"
+	}
+]
+Indexes for shards:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.shards"
+	},
+	{
+		"v" : 1,
+		"unique" : true,
+		"key" : {
+			"host" : 1
+		},
+		"name" : "host_1",
+		"ns" : "config.shards"
 	}
 ]
 Indexes for system.indexes:
 [ ]
-{ "ok" : 0, "errmsg" : "not running with --replSet", "code" : 76 }
-
-# Logs ######################################################
-
-2016-03-26T02:43:52.809-0300 I JOURNAL  [initandlisten] journal dir=/Users/fernandoipar/mongo-summary-tests//standalone/journal
-2016-03-26T02:43:52.809-0300 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
-2016-03-26T02:43:52.826-0300 I JOURNAL  [durability] Durability thread started
-2016-03-26T02:43:52.826-0300 I CONTROL  [initandlisten] MongoDB starting : pid=23024 port=28000 dbpath=/Users/fernandoipar/mongo-summary-tests//standalone 64-bit host=telecaster.local
-2016-03-26T02:43:52.826-0300 I JOURNAL  [journal writer] Journal writer thread started
-2016-03-26T02:43:52.827-0300 I CONTROL  [initandlisten] db version v3.0.4
-2016-03-26T02:43:52.827-0300 I CONTROL  [initandlisten] git version: nogitversion
-2016-03-26T02:43:52.827-0300 I CONTROL  [initandlisten] build info: Darwin yosemitevm.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05 PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64 BOOST_LIB_VERSION=1_49
-2016-03-26T02:43:52.827-0300 I CONTROL  [initandlisten] allocator: system
-2016-03-26T02:43:52.827-0300 I CONTROL  [initandlisten] options: { net: { port: 28000 }, processManagement: { fork: true, pidFilePath: "/Users/fernandoipar/mongo-summary-tests//standalone/pid" }, storage: { dbPath: "/Users/fernandoipar/mongo-summary-tests//standalone" }, systemLog: { destination: "file", path: "/Users/fernandoipar/mongo-summary-tests//standalone/log" } }
-2016-03-26T02:43:52.828-0300 I INDEX    [initandlisten] allocating new ns file /Users/fernandoipar/mongo-summary-tests//standalone/local.ns, filling with zeroes...
-2016-03-26T02:43:52.859-0300 I STORAGE  [FileAllocator] allocating new datafile /Users/fernandoipar/mongo-summary-tests//standalone/local.0, filling with zeroes...
-2016-03-26T02:43:52.860-0300 I STORAGE  [FileAllocator] creating directory /Users/fernandoipar/mongo-summary-tests//standalone/_tmp
-2016-03-26T02:43:52.959-0300 I STORAGE  [FileAllocator] done allocating datafile /Users/fernandoipar/mongo-summary-tests//standalone/local.0, size: 64MB,  took 0.098 secs
-2016-03-26T02:43:53.091-0300 I NETWORK  [initandlisten] waiting for connections on port 28000
-2016-03-26T02:43:57.879-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55364 #1 (1 connection now open)
-2016-03-26T02:43:57.896-0300 I NETWORK  [conn1] end connection 127.0.0.1:55364 (0 connections now open)
-2016-03-26T02:43:57.935-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55365 #2 (1 connection now open)
+Indexes for tags:
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "config.tags"
+	},
+	{
+		"v" : 1,
+		"unique" : true,
+		"key" : {
+			"ns" : 1,
+			"min" : 1
+		},
+		"name" : "ns_1_min_1",
+		"ns" : "config.tags"
+	}
+]
+2016-03-26T02:43:24.482-0300 E QUERY    TypeError: Object function (){
+    return this.serverBuildInfo().version;
+} has no method 'getIndexes'
+    at mongo-summary-extra.js:31:36
+    at Array.forEach (native)
+    at mongo-summary-extra.js:30:32
+    at Array.forEach (native)
+    at mongo-summary-extra.js:27:22
+    at Array.forEach (native)
+    at printExtraDiagnosticsInfo (mongo-summary-extra.js:20:51)
+    at mongo-summary-extra.js:59:1 at mongo-summary-extra.js:31
+failed to load: mongo-summary-extra.js

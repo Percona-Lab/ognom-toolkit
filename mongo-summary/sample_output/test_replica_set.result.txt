@@ -3,7 +3,7 @@ connecting to: 127.0.0.1:28000/test
 
 # Percona Toolkit MongoDB Summary Report ####################
 
-Report generated on telecaster.local:28000 at 2016-02-06 01:43:01 GMT-0300 (ART)
+Report generated on telecaster.local:28000 at 2016-02-06 02:44:21 GMT-0300 (ART)
 0 operations in progress
 
 # Replication summary #######################################
@@ -24,11 +24,11 @@ telecaster.local:28003
 	"host" : "telecaster.local:28000",
 	"version" : "3.0.4",
 	"process" : "mongod",
-	"pid" : NumberLong(20757),
-	"uptime" : 23,
-	"uptimeMillis" : NumberLong(23215),
+	"pid" : NumberLong(23044),
+	"uptime" : 24,
+	"uptimeMillis" : NumberLong(23217),
 	"uptimeEstimate" : 21,
-	"localTime" : ISODate("2016-03-26T04:43:01.893Z"),
+	"localTime" : ISODate("2016-03-26T05:44:21.199Z"),
 	"asserts" : {
 		"regular" : 0,
 		"warning" : 0,
@@ -64,12 +64,12 @@ telecaster.local:28003
 		"commitsInWriteLock" : 0,
 		"earlyCommits" : 0,
 		"timeMs" : {
-			"dt" : 3012,
+			"dt" : 3027,
 			"prepLogBuffer" : 0,
 			"writeToJournal" : 0,
 			"writeToDataFiles" : 0,
 			"remapPrivateView" : 0,
-			"commits" : 354,
+			"commits" : 352,
 			"commitsInWriteLock" : 0
 		}
 	},
@@ -78,7 +78,7 @@ telecaster.local:28003
 		"page_faults" : 23
 	},
 	"globalLock" : {
-		"totalTime" : NumberLong(23214000),
+		"totalTime" : NumberLong(23216000),
 		"currentQueue" : {
 			"total" : 0,
 			"readers" : 0,
@@ -103,15 +103,15 @@ telecaster.local:28003
 			"acquireCount" : {
 				"r" : NumberLong(35),
 				"w" : NumberLong(38),
-				"R" : NumberLong(207)
+				"R" : NumberLong(206)
 			},
 			"acquireWaitCount" : {
-				"w" : NumberLong(2),
-				"R" : NumberLong(2)
+				"w" : NumberLong(1),
+				"R" : NumberLong(1)
 			},
 			"timeAcquiringMicros" : {
-				"w" : NumberLong(108),
-				"R" : NumberLong(358590)
+				"w" : NumberLong(33),
+				"R" : NumberLong(351562)
 			}
 		},
 		"Database" : {
@@ -125,7 +125,7 @@ telecaster.local:28003
 				"W" : NumberLong(1)
 			},
 			"timeAcquiringMicros" : {
-				"W" : NumberLong(77)
+				"W" : NumberLong(18)
 			}
 		},
 		"Collection" : {
@@ -181,8 +181,8 @@ telecaster.local:28003
 		],
 		"primary" : "telecaster.local:28000",
 		"me" : "telecaster.local:28000",
-		"electionId" : ObjectId("56f61353e346cfca4e8f7d76"),
-		"rbid" : 1880571811
+		"electionId" : ObjectId("56f621b3277860e29a51771b"),
+		"rbid" : 811374282
 	},
 	"storageEngine" : {
 		"name" : "mmapv1"
@@ -1198,7 +1198,7 @@ Indexes for system.replset:
 ]
 {
 	"set" : "test",
-	"date" : ISODate("2016-03-26T04:43:01.963Z"),
+	"date" : ISODate("2016-03-26T05:44:21.267Z"),
 	"myState" : 1,
 	"members" : [
 		{
@@ -1207,11 +1207,11 @@ Indexes for system.replset:
 			"health" : 1,
 			"state" : 1,
 			"stateStr" : "PRIMARY",
-			"uptime" : 23,
-			"optime" : Timestamp(1458967379, 5),
-			"optimeDate" : ISODate("2016-03-26T04:42:59Z"),
-			"electionTime" : Timestamp(1458967379, 2),
-			"electionDate" : ISODate("2016-03-26T04:42:59Z"),
+			"uptime" : 24,
+			"optime" : Timestamp(1458971059, 5),
+			"optimeDate" : ISODate("2016-03-26T05:44:19Z"),
+			"electionTime" : Timestamp(1458971059, 2),
+			"electionDate" : ISODate("2016-03-26T05:44:19Z"),
 			"configVersion" : 4,
 			"self" : true
 		},
@@ -1224,8 +1224,8 @@ Indexes for system.replset:
 			"uptime" : 2,
 			"optime" : Timestamp(0, 0),
 			"optimeDate" : ISODate("1970-01-01T00:00:00Z"),
-			"lastHeartbeat" : ISODate("2016-03-26T04:43:01.838Z"),
-			"lastHeartbeatRecv" : ISODate("2016-03-26T04:43:01.834Z"),
+			"lastHeartbeat" : ISODate("2016-03-26T05:44:21.143Z"),
+			"lastHeartbeatRecv" : ISODate("2016-03-26T05:44:21.141Z"),
 			"pingMs" : 0,
 			"configVersion" : 4
 		},
@@ -1238,8 +1238,8 @@ Indexes for system.replset:
 			"uptime" : 2,
 			"optime" : Timestamp(0, 0),
 			"optimeDate" : ISODate("1970-01-01T00:00:00Z"),
-			"lastHeartbeat" : ISODate("2016-03-26T04:43:01.838Z"),
-			"lastHeartbeatRecv" : ISODate("2016-03-26T04:43:01.844Z"),
+			"lastHeartbeat" : ISODate("2016-03-26T05:44:21.143Z"),
+			"lastHeartbeatRecv" : ISODate("2016-03-26T05:44:21.151Z"),
 			"pingMs" : 0,
 			"configVersion" : 4
 		},
@@ -1250,9 +1250,9 @@ Indexes for system.replset:
 			"state" : 7,
 			"stateStr" : "ARBITER",
 			"uptime" : 2,
-			"lastHeartbeat" : ISODate("2016-03-26T04:43:01.837Z"),
-			"lastHeartbeatRecv" : ISODate("2016-03-26T04:43:01.844Z"),
-			"pingMs" : 0,
+			"lastHeartbeat" : ISODate("2016-03-26T05:44:21.144Z"),
+			"lastHeartbeatRecv" : ISODate("2016-03-26T05:44:21.151Z"),
+			"pingMs" : 1,
 			"configVersion" : 4
 		}
 	],
@@ -1261,90 +1261,90 @@ Indexes for system.replset:
 
 # Logs ######################################################
 
-2016-03-26T01:42:38.715-0300 I JOURNAL  [initandlisten] journal dir=/Users/fernandoipar/mongo-summary-tests//primary/journal
-2016-03-26T01:42:38.715-0300 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
-2016-03-26T01:42:38.731-0300 I JOURNAL  [durability] Durability thread started
-2016-03-26T01:42:38.731-0300 I JOURNAL  [journal writer] Journal writer thread started
-2016-03-26T01:42:38.731-0300 I CONTROL  [initandlisten] MongoDB starting : pid=20757 port=28000 dbpath=/Users/fernandoipar/mongo-summary-tests//primary 64-bit host=telecaster.local
-2016-03-26T01:42:38.731-0300 I CONTROL  [initandlisten] db version v3.0.4
-2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] git version: nogitversion
-2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] build info: Darwin yosemitevm.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05 PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64 BOOST_LIB_VERSION=1_49
-2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] allocator: system
-2016-03-26T01:42:38.732-0300 I CONTROL  [initandlisten] options: { net: { port: 28000 }, processManagement: { fork: true, pidFilePath: "/Users/fernandoipar/mongo-summary-tests//primary/pid" }, replication: { replSet: "test" }, storage: { dbPath: "/Users/fernandoipar/mongo-summary-tests//primary" }, systemLog: { destination: "file", path: "/Users/fernandoipar/mongo-summary-tests//primary/log" } }
-2016-03-26T01:42:38.732-0300 I INDEX    [initandlisten] allocating new ns file /Users/fernandoipar/mongo-summary-tests//primary/local.ns, filling with zeroes...
-2016-03-26T01:42:38.764-0300 I STORAGE  [FileAllocator] allocating new datafile /Users/fernandoipar/mongo-summary-tests//primary/local.0, filling with zeroes...
-2016-03-26T01:42:38.764-0300 I STORAGE  [FileAllocator] creating directory /Users/fernandoipar/mongo-summary-tests//primary/_tmp
-2016-03-26T01:42:38.857-0300 I STORAGE  [FileAllocator] done allocating datafile /Users/fernandoipar/mongo-summary-tests//primary/local.0, size: 64MB,  took 0.093 secs
-2016-03-26T01:42:38.884-0300 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
-2016-03-26T01:42:38.886-0300 I NETWORK  [initandlisten] waiting for connections on port 28000
-2016-03-26T01:42:58.998-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:53931 #1 (1 connection now open)
-2016-03-26T01:42:58.999-0300 I COMMAND  [conn1] replSet info initiate : no configuration specified.  Using a default configuration for the set
-2016-03-26T01:42:58.999-0300 I COMMAND  [conn1] replSet created this configuration for initiation : { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000" } ] }
-2016-03-26T01:42:59.000-0300 I REPL     [conn1] replSetInitiate admin command received from client
-2016-03-26T01:42:59.408-0300 I REPL     [conn1] replSet replSetInitiate config object with 1 members parses ok
-2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
-2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
-2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] transition to STARTUP2
-2016-03-26T01:42:59.412-0300 I REPL     [conn1] ******
-2016-03-26T01:42:59.412-0300 I REPL     [conn1] creating replication oplog of size: 192MB...
-2016-03-26T01:42:59.413-0300 I STORAGE  [FileAllocator] allocating new datafile /Users/fernandoipar/mongo-summary-tests//primary/local.1, filling with zeroes...
-2016-03-26T01:42:59.789-0300 I STORAGE  [FileAllocator] done allocating datafile /Users/fernandoipar/mongo-summary-tests//primary/local.1, size: 256MB,  took 0.376 secs
-2016-03-26T01:42:59.818-0300 I REPL     [conn1] ******
-2016-03-26T01:42:59.818-0300 I REPL     [conn1] Starting replication applier threads
-2016-03-26T01:42:59.818-0300 I COMMAND  [conn1] command admin.$cmd command: replSetInitiate { replSetInitiate: undefined } keyUpdates:0 writeConflicts:0 numYields:0 reslen:131 locks:{ Global: { acquireCount: { r: 5, w: 3, W: 2 } }, MMAPV1Journal: { acquireCount: { w: 7 }, acquireWaitCount: { w: 1 }, timeAcquiringMicros: { w: 55 } }, Database: { acquireCount: { w: 1, W: 2 } }, Metadata: { acquireCount: { W: 3 } }, oplog: { acquireCount: { w: 1 } } } 819ms
-2016-03-26T01:42:59.818-0300 I REPL     [ReplicationExecutor] transition to RECOVERING
-2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to SECONDARY
-2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to PRIMARY
-2016-03-26T01:42:59.820-0300 I REPL     [conn1] replSetReconfig admin command received from client
-2016-03-26T01:42:59.820-0300 E REPL     [conn1] replSetReconfig got BadValue Found two member configurations with same host field, members.0.host == members.1.host == telecaster.local:28000 while validating { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1.0, host: "telecaster.local:28000" } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastE
-2016-03-26T01:42:59.822-0300 I REPL     [conn1] replSetReconfig admin command received from client
-2016-03-26T01:42:59.823-0300 I REPL     [conn1] replSetReconfig config object with 2 members parses ok
-2016-03-26T01:42:59.824-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: 
-2016-03-26T01:42:59.824-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53934 #2 (2 connections now open)
-2016-03-26T01:42:59.825-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
-2016-03-26T01:42:59.825-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP
-2016-03-26T01:42:59.826-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53935 #3 (3 connections now open)
-2016-03-26T01:42:59.826-0300 I NETWORK  [conn3] end connection 192.168.0.2:53935 (2 connections now open)
-2016-03-26T01:42:59.826-0300 I REPL     [conn1] replSetReconfig admin command received from client
-2016-03-26T01:42:59.828-0300 I REPL     [conn1] replSetReconfig config object with 3 members parses ok
-2016-03-26T01:42:59.829-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 3, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
-2016-03-26T01:42:59.830-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
-2016-03-26T01:42:59.830-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53939 #4 (3 connections now open)
-2016-03-26T01:42:59.830-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP2
-2016-03-26T01:42:59.831-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP
-2016-03-26T01:42:59.831-0300 I REPL     [conn1] replSetReconfig admin command received from client
-2016-03-26T01:42:59.831-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53940 #5 (4 connections now open)
-2016-03-26T01:42:59.832-0300 I NETWORK  [conn5] end connection 192.168.0.2:53940 (3 connections now open)
-2016-03-26T01:42:59.834-0300 I REPL     [conn1] replSetReconfig config object with 4 members parses ok
-2016-03-26T01:42:59.835-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 4, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
-2016-03-26T01:42:59.835-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
-2016-03-26T01:42:59.836-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53946 #6 (4 connections now open)
-2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state STARTUP
-2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP2
-2016-03-26T01:42:59.837-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53948 #7 (5 connections now open)
-2016-03-26T01:42:59.837-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53949 #8 (6 connections now open)
-2016-03-26T01:42:59.838-0300 I NETWORK  [conn1] end connection 127.0.0.1:53931 (4 connections now open)
-2016-03-26T01:42:59.838-0300 I NETWORK  [conn7] end connection 192.168.0.2:53948 (4 connections now open)
-2016-03-26T01:42:59.838-0300 I NETWORK  [conn8] end connection 192.168.0.2:53949 (4 connections now open)
-2016-03-26T01:43:00.823-0300 I REPL     [rsSync] transition to primary complete; database writes are now permitted
-2016-03-26T01:43:01.831-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:53957 #9 (4 connections now open)
-2016-03-26T01:43:01.831-0300 I NETWORK  [conn9] end connection 192.168.0.2:53957 (3 connections now open)
-2016-03-26T01:43:01.837-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state ARBITER
-2016-03-26T01:43:01.890-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:53962 #10 (4 connections now open)
-2016-03-26T01:43:01.909-0300 I NETWORK  [conn10] end connection 127.0.0.1:53962 (3 connections now open)
-2016-03-26T01:43:01.949-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:53963 #11 (4 connections now open)
-2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
-2016-03-26T01:42:59.411-0300 I REPL     [ReplicationExecutor] transition to STARTUP2
-2016-03-26T01:42:59.818-0300 I REPL     [ReplicationExecutor] transition to RECOVERING
-2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to SECONDARY
-2016-03-26T01:42:59.819-0300 I REPL     [ReplicationExecutor] transition to PRIMARY
-2016-03-26T01:42:59.824-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: 
-2016-03-26T01:42:59.825-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP
-2016-03-26T01:42:59.829-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 3, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
-2016-03-26T01:42:59.830-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP2
-2016-03-26T01:42:59.831-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP
-2016-03-26T01:42:59.835-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 4, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
-2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state STARTUP
-2016-03-26T01:42:59.836-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP2
-2016-03-26T01:43:00.823-0300 I REPL     [rsSync] transition to primary complete; database writes are now permitted
-2016-03-26T01:43:01.837-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state ARBITER
+2016-03-26T02:43:58.017-0300 I JOURNAL  [initandlisten] journal dir=/Users/fernandoipar/mongo-summary-tests//primary/journal
+2016-03-26T02:43:58.017-0300 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
+2016-03-26T02:43:58.032-0300 I JOURNAL  [durability] Durability thread started
+2016-03-26T02:43:58.033-0300 I CONTROL  [initandlisten] MongoDB starting : pid=23044 port=28000 dbpath=/Users/fernandoipar/mongo-summary-tests//primary 64-bit host=telecaster.local
+2016-03-26T02:43:58.033-0300 I JOURNAL  [journal writer] Journal writer thread started
+2016-03-26T02:43:58.033-0300 I CONTROL  [initandlisten] db version v3.0.4
+2016-03-26T02:43:58.033-0300 I CONTROL  [initandlisten] git version: nogitversion
+2016-03-26T02:43:58.034-0300 I CONTROL  [initandlisten] build info: Darwin yosemitevm.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05 PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64 BOOST_LIB_VERSION=1_49
+2016-03-26T02:43:58.034-0300 I CONTROL  [initandlisten] allocator: system
+2016-03-26T02:43:58.034-0300 I CONTROL  [initandlisten] options: { net: { port: 28000 }, processManagement: { fork: true, pidFilePath: "/Users/fernandoipar/mongo-summary-tests//primary/pid" }, replication: { replSet: "test" }, storage: { dbPath: "/Users/fernandoipar/mongo-summary-tests//primary" }, systemLog: { destination: "file", path: "/Users/fernandoipar/mongo-summary-tests//primary/log" } }
+2016-03-26T02:43:58.034-0300 I INDEX    [initandlisten] allocating new ns file /Users/fernandoipar/mongo-summary-tests//primary/local.ns, filling with zeroes...
+2016-03-26T02:43:58.061-0300 I STORAGE  [FileAllocator] allocating new datafile /Users/fernandoipar/mongo-summary-tests//primary/local.0, filling with zeroes...
+2016-03-26T02:43:58.061-0300 I STORAGE  [FileAllocator] creating directory /Users/fernandoipar/mongo-summary-tests//primary/_tmp
+2016-03-26T02:43:58.136-0300 I STORAGE  [FileAllocator] done allocating datafile /Users/fernandoipar/mongo-summary-tests//primary/local.0, size: 64MB,  took 0.074 secs
+2016-03-26T02:43:58.158-0300 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-03-26T02:43:58.160-0300 I NETWORK  [initandlisten] waiting for connections on port 28000
+2016-03-26T02:44:18.310-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55371 #1 (1 connection now open)
+2016-03-26T02:44:18.311-0300 I COMMAND  [conn1] replSet info initiate : no configuration specified.  Using a default configuration for the set
+2016-03-26T02:44:18.311-0300 I COMMAND  [conn1] replSet created this configuration for initiation : { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000" } ] }
+2016-03-26T02:44:18.311-0300 I REPL     [conn1] replSetInitiate admin command received from client
+2016-03-26T02:44:18.677-0300 I REPL     [conn1] replSet replSetInitiate config object with 1 members parses ok
+2016-03-26T02:44:18.680-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-03-26T02:44:18.680-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T02:44:18.680-0300 I REPL     [ReplicationExecutor] transition to STARTUP2
+2016-03-26T02:44:18.681-0300 I REPL     [conn1] ******
+2016-03-26T02:44:18.681-0300 I REPL     [conn1] creating replication oplog of size: 192MB...
+2016-03-26T02:44:18.681-0300 I STORAGE  [FileAllocator] allocating new datafile /Users/fernandoipar/mongo-summary-tests//primary/local.1, filling with zeroes...
+2016-03-26T02:44:19.100-0300 I STORAGE  [FileAllocator] done allocating datafile /Users/fernandoipar/mongo-summary-tests//primary/local.1, size: 256MB,  took 0.419 secs
+2016-03-26T02:44:19.122-0300 I REPL     [conn1] ******
+2016-03-26T02:44:19.122-0300 I REPL     [conn1] Starting replication applier threads
+2016-03-26T02:44:19.123-0300 I COMMAND  [conn1] command admin.$cmd command: replSetInitiate { replSetInitiate: undefined } keyUpdates:0 writeConflicts:0 numYields:0 reslen:131 locks:{ Global: { acquireCount: { r: 5, w: 3, W: 2 } }, MMAPV1Journal: { acquireCount: { w: 7 }, acquireWaitCount: { w: 1 }, timeAcquiringMicros: { w: 33 } }, Database: { acquireCount: { w: 1, W: 2 } }, Metadata: { acquireCount: { W: 3 } }, oplog: { acquireCount: { w: 1 } } } 811ms
+2016-03-26T02:44:19.123-0300 I REPL     [ReplicationExecutor] transition to RECOVERING
+2016-03-26T02:44:19.123-0300 I REPL     [ReplicationExecutor] transition to SECONDARY
+2016-03-26T02:44:19.124-0300 I REPL     [ReplicationExecutor] transition to PRIMARY
+2016-03-26T02:44:19.125-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T02:44:19.125-0300 E REPL     [conn1] replSetReconfig got BadValue Found two member configurations with same host field, members.0.host == members.1.host == telecaster.local:28000 while validating { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1.0, host: "telecaster.local:28000" } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastE
+2016-03-26T02:44:19.126-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T02:44:19.127-0300 I REPL     [conn1] replSetReconfig config object with 2 members parses ok
+2016-03-26T02:44:19.129-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: 
+2016-03-26T02:44:19.129-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55374 #2 (2 connections now open)
+2016-03-26T02:44:19.130-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T02:44:19.130-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP
+2016-03-26T02:44:19.131-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55375 #3 (3 connections now open)
+2016-03-26T02:44:19.131-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T02:44:19.131-0300 I NETWORK  [conn3] end connection 192.168.0.2:55375 (2 connections now open)
+2016-03-26T02:44:19.134-0300 I REPL     [conn1] replSetReconfig config object with 3 members parses ok
+2016-03-26T02:44:19.135-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 3, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T02:44:19.135-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T02:44:19.136-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP2
+2016-03-26T02:44:19.136-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55379 #4 (3 connections now open)
+2016-03-26T02:44:19.137-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP
+2016-03-26T02:44:19.137-0300 I REPL     [conn1] replSetReconfig admin command received from client
+2016-03-26T02:44:19.138-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55380 #5 (4 connections now open)
+2016-03-26T02:44:19.138-0300 I NETWORK  [conn5] end connection 192.168.0.2:55380 (3 connections now open)
+2016-03-26T02:44:19.140-0300 I REPL     [conn1] replSetReconfig config object with 4 members parses ok
+2016-03-26T02:44:19.141-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 4, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T02:44:19.141-0300 I REPL     [ReplicationExecutor] This node is telecaster.local:28000 in the config
+2016-03-26T02:44:19.142-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP2
+2016-03-26T02:44:19.143-0300 I NETWORK  [conn1] end connection 127.0.0.1:55371 (2 connections now open)
+2016-03-26T02:44:19.144-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55388 #6 (3 connections now open)
+2016-03-26T02:44:19.144-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state STARTUP
+2016-03-26T02:44:19.144-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55389 #7 (4 connections now open)
+2016-03-26T02:44:19.145-0300 I NETWORK  [conn7] end connection 192.168.0.2:55389 (3 connections now open)
+2016-03-26T02:44:19.145-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55390 #8 (4 connections now open)
+2016-03-26T02:44:19.146-0300 I NETWORK  [conn8] end connection 192.168.0.2:55390 (3 connections now open)
+2016-03-26T02:44:20.127-0300 I REPL     [rsSync] transition to primary complete; database writes are now permitted
+2016-03-26T02:44:21.137-0300 I NETWORK  [initandlisten] connection accepted from 192.168.0.2:55398 #9 (4 connections now open)
+2016-03-26T02:44:21.138-0300 I NETWORK  [conn9] end connection 192.168.0.2:55398 (3 connections now open)
+2016-03-26T02:44:21.144-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state ARBITER
+2016-03-26T02:44:21.195-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55403 #10 (4 connections now open)
+2016-03-26T02:44:21.212-0300 I NETWORK  [conn10] end connection 127.0.0.1:55403 (3 connections now open)
+2016-03-26T02:44:21.253-0300 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:55404 #11 (4 connections now open)
+2016-03-26T02:44:18.680-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 1, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-03-26T02:44:18.680-0300 I REPL     [ReplicationExecutor] transition to STARTUP2
+2016-03-26T02:44:19.123-0300 I REPL     [ReplicationExecutor] transition to RECOVERING
+2016-03-26T02:44:19.123-0300 I REPL     [ReplicationExecutor] transition to SECONDARY
+2016-03-26T02:44:19.124-0300 I REPL     [ReplicationExecutor] transition to PRIMARY
+2016-03-26T02:44:19.129-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 2, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatTimeoutSecs: 10, getLastErrorModes: 
+2016-03-26T02:44:19.130-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP
+2016-03-26T02:44:19.135-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 3, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T02:44:19.136-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28001 is now in state STARTUP2
+2016-03-26T02:44:19.137-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP
+2016-03-26T02:44:19.141-0300 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "test", version: 4, members: [ { _id: 0, host: "telecaster.local:28000", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "telecaster.local:28001", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "telecaster.local:28002", arbiterOnly: false, buildIndexes: true, 
+2016-03-26T02:44:19.142-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28002 is now in state STARTUP2
+2016-03-26T02:44:19.144-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state STARTUP
+2016-03-26T02:44:20.127-0300 I REPL     [rsSync] transition to primary complete; database writes are now permitted
+2016-03-26T02:44:21.144-0300 I REPL     [ReplicationExecutor] Member telecaster.local:28003 is now in state ARBITER

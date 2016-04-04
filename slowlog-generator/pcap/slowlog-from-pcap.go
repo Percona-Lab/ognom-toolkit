@@ -363,9 +363,9 @@ func dump(src gopacket.PacketDataSource) {
 				opInfo := make(myutil.OpInfo)
 				opInfo["millis"] = fmt.Sprintf("%f", elapsed)
 				opInfo["sent"] = fmt.Sprintf("%v", len(payload))
-				fmt.Print(myutil.GetSlowQueryLogHeader(opInfo))
 				query, ok := queries[header.ResponseTo]
 				if ok {
+					fmt.Print(myutil.GetSlowQueryLogHeader(opInfo))
 					fmt.Print(query)
 					delete(queries, header.ResponseTo)
 				} else {

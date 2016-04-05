@@ -25,12 +25,19 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-var iface = flag.String("i", "eth0", "Interface to read packets from")
-var fname = flag.String("r", "", "Filename to read from, overrides -i")
-var snaplen = flag.Int("s", 65536, "Snap length (number of bytes max to read per packet")
-var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
-var promisc = flag.Bool("promisc", true, "Set promiscuous mode")
-var verbose = 1
+var iface = "eth0"
+var fname = ""
+var snaplen = 65536
+var tstype = ""
+var verbose = false
+
+func init() {
+	flag.StringVar(&iface, "i", "eth0", "Interface to read packets from")
+	flag.BoolVar(&verbose, "v", false, "Enable verbose mode")
+	flag.StringVar(&fname, "r", "", "Filename to read from, overrides -i")
+	flag.IntVar(&snaplen, "s", 65536, "Number of bytes max to read per packet")
+	flag.StringVar(&tstype, "t", "", "Type of timestamp to use")
+}
 
 // next code all copied from facebookgo/dvara
 
@@ -165,7 +172,7 @@ func processUpdatePayload(data []byte, header messageHeader) (output string) {
 	bdoc := mybson[:docEndsAt]
 	json := make(map[string]interface{})
 	bson.Unmarshal(bdoc, json)
-	if verbose > 2 {
+	if verbose {
 		fmt.Print("Unmarshalled selector json: ")
 		fmt.Println(json)
 	}
@@ -173,7 +180,7 @@ func processUpdatePayload(data []byte, header messageHeader) (output string) {
 	aux_output, _, _ := myutil.RecurseJsonMap(json)
 	output += aux_output
 	output += "},{"
-	if verbose > 2 {
+	if verbose {
 		fmt.Print("Selector: ")
 		fmt.Print("mybson bytes: ")
 		fmt.Println(mybson)
@@ -187,7 +194,7 @@ func processUpdatePayload(data []byte, header messageHeader) (output string) {
 	bdoc = mybson[:docEndsAt]
 	json = make(map[string]interface{})
 	bson.Unmarshal(bdoc, json)
-	if verbose > 2 {
+	if verbose {
 		fmt.Print("Unmarshalled updater json: ")
 		fmt.Println(json)
 	}
@@ -211,7 +218,7 @@ func processInsertPayload(data []byte, header messageHeader) (output string) {
 	bdoc := mybson[:docEndsAt]
 	json := make(map[string]interface{})
 	bson.Unmarshal(bdoc, json)
-	if verbose > 2 {
+	if verbose {
 		fmt.Print("Unmarshalled selector json: ")
 		fmt.Println(json)
 	}
@@ -223,7 +230,7 @@ func processInsertPayload(data []byte, header messageHeader) (output string) {
 }
 
 func processGetMorePayload(data []byte, header messageHeader) (output string) {
-	//	if verbose > 2 {
+	//	if verbose {
 	//		fmt.Println("Processing GetMore payload")
 	//	}
 	sub := data[20:]
@@ -235,7 +242,7 @@ func processGetMorePayload(data []byte, header messageHeader) (output string) {
 	}
 	collectionName := sub[0:docStartsAt]
 	output = fmt.Sprintf("%v.getMore();\n", string(collectionName[:]))
-	//if verbose > 2 {
+	//if verbose {
 	//fmt.Println(output)
 	//}
 	return output
@@ -251,7 +258,7 @@ func processQueryPayload(data []byte, header messageHeader) (output string) {
 	}
 	collectionName := sub[0:docStartsAt]
 	docStartsAt++
-	if verbose > 2 {
+	if verbose {
 		fmt.Print("Raw data: ")
 		fmt.Println(data)
 		fmt.Printf("Querying collection %v\n", string(collectionName[:]))
@@ -266,7 +273,7 @@ func processQueryPayload(data []byte, header messageHeader) (output string) {
 	bdoc := mybson[:docEndsAt]
 	json := make(map[string]interface{})
 	bson.Unmarshal(bdoc, json)
-	if verbose > 2 {
+	if verbose {
 		fmt.Print("Unmarshalled json: ")
 		fmt.Println(json)
 	}
@@ -277,7 +284,7 @@ func processQueryPayload(data []byte, header messageHeader) (output string) {
 		output += aux_output
 		output += "});\n"
 	}
-	if verbose > 2 {
+	if verbose {
 		fmt.Print("mybson bytes: ")
 		fmt.Println(mybson)
 		fmt.Print("Document bytes:")
@@ -342,7 +349,7 @@ func dump(src gopacket.PacketDataSource) {
 			header.ResponseTo = getInt32(payload, 8)
 			header.OpCode = OpCode(getInt32(payload, 12))
 			startTimes[header.RequestID] = time.Now()
-			if verbose > 2 {
+			if verbose {
 				fmt.Println("OpCode: ", header.OpCode)
 				fmt.Println("Captured packet")
 				fmt.Printf("Captured packet (OpCode: %v)\n", header.OpCode)
@@ -350,12 +357,12 @@ func dump(src gopacket.PacketDataSource) {
 			switch header.OpCode {
 			case OpQuery:
 				queries[header.RequestID] = processQueryPayload(payload, header)
-				if verbose > 2 {
+				if verbose {
 					fmt.Printf("Saved Query for %v", header.RequestID)
 				}
 			case OpGetMore:
 				queries[header.RequestID] = processGetMorePayload(payload, header)
-				if verbose > 2 {
+				if verbose {
 					fmt.Printf("Saved GetMore for %v", header.RequestID)
 				}
 			case OpReply:
@@ -369,7 +376,7 @@ func dump(src gopacket.PacketDataSource) {
 					fmt.Print(query)
 					delete(queries, header.ResponseTo)
 				} else {
-					if verbose > 1 {
+					if verbose {
 						fmt.Printf("   Orphaned reply for %v\n", header.ResponseTo)
 					}
 				}
@@ -378,7 +385,7 @@ func dump(src gopacket.PacketDataSource) {
 			case OpInsert:
 				queries[header.RequestID] = processInsertPayload(payload, header)
 			default:
-				if verbose > 1 {
+				if verbose {
 					fmt.Println("Unimplemented Opcode ", header.OpCode)
 				}
 			}
@@ -395,28 +402,31 @@ func main() {
 	var handle *pcap.Handle
 	var err error
 	flag.Parse()
-	if *fname != "" {
-		if handle, err = pcap.OpenOffline(*fname); err != nil {
+	if verbose {
+		fmt.Println("Running in verbose mode")
+	}
+	if fname != "" {
+		if handle, err = pcap.OpenOffline(fname); err != nil {
 			log.Fatal("PCAP OpenOffline error:", err)
 		}
 	} else {
 		// This is a little complicated because we want to allow all possible options
 		// for creating the packet capture handle... instead of all this you can
 		// just call pcap.OpenLive if you want a simple handle.
-		inactive, err := pcap.NewInactiveHandle(*iface)
+		inactive, err := pcap.NewInactiveHandle(iface)
 		if err != nil {
 			log.Fatal("could not create: %v", err)
 		}
 		defer inactive.CleanUp()
-		if err = inactive.SetSnapLen(*snaplen); err != nil {
+		if err = inactive.SetSnapLen(snaplen); err != nil {
 			log.Fatal("could not set snap length: %v", err)
-		} else if err = inactive.SetPromisc(*promisc); err != nil {
+		} else if err = inactive.SetPromisc(true); err != nil {
 			log.Fatal("could not set promisc mode: %v", err)
 		} else if err = inactive.SetTimeout(time.Second); err != nil {
 			log.Fatal("could not set timeout: %v", err)
 		}
-		if *tstype != "" {
-			if t, err := pcap.TimestampSourceFromString(*tstype); err != nil {
+		if tstype != "" {
+			if t, err := pcap.TimestampSourceFromString(tstype); err != nil {
 				log.Fatalf("Supported timestamp types: %v", inactive.SupportedTimestamps())
 			} else if err := inactive.SetTimestampSource(t); err != nil {
 				log.Fatalf("Supported timestamp types: %v", inactive.SupportedTimestamps())

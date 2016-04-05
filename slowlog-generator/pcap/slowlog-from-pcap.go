@@ -25,6 +25,14 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+const idxMessageLength = 0
+const idxRequestId = 4
+const idxResponseTo = 8
+const idxOpCode = 12
+
+//const idxFlags = 16
+const idxStartingFrom = 28
+
 var iface = "eth0"
 var fname = ""
 var snaplen = 65536
@@ -344,21 +352,24 @@ func dump(src gopacket.PacketDataSource) {
 			// This code is unsafe. It performs no check and will fail miserably if the packet is
 			// not a mongo packet. Pass the proper 'port N' filter to pcap when invoking the program
 			var header messageHeader
-			header.MessageLength = getInt32(payload, 0)
-			header.RequestID = getInt32(payload, 4)
-			header.ResponseTo = getInt32(payload, 8)
-			header.OpCode = OpCode(getInt32(payload, 12))
+			header.MessageLength = getInt32(payload, idxMessageLength)
+			header.RequestID = getInt32(payload, idxRequestId)
+			header.ResponseTo = getInt32(payload, idxResponseTo)
+			header.OpCode = OpCode(getInt32(payload, idxOpCode))
+			//responseFlags := getInt32(payload, idxFlags)
+			startingFrom := getInt32(payload, idxStartingFrom)
+
 			startTimes[header.RequestID] = time.Now()
 			if verbose {
 				fmt.Println("OpCode: ", header.OpCode)
 				fmt.Println("Captured packet")
-				fmt.Printf("Captured packet (OpCode: %v)\n", header.OpCode)
+				fmt.Printf("Captured packet (OpCode: %v, cursorStartingFrom: %v)\n", header.OpCode, startingFrom)
 			}
 			switch header.OpCode {
 			case OpQuery:
 				queries[header.RequestID] = processQueryPayload(payload, header)
 				if verbose {
-					fmt.Printf("Saved Query for %v", header.RequestID)
+					fmt.Printf("Saved Query for %v(%v)\n", header.RequestID, queries[header.RequestID])
 				}
 			case OpGetMore:
 				queries[header.RequestID] = processGetMorePayload(payload, header)
@@ -366,19 +377,29 @@ func dump(src gopacket.PacketDataSource) {
 					fmt.Printf("Saved GetMore for %v", header.RequestID)
 				}
 			case OpReply:
-				elapsed := processReplyPayload(payload, header)
-				opInfo := make(myutil.OpInfo)
-				opInfo["millis"] = fmt.Sprintf("%f", elapsed)
-				opInfo["sent"] = fmt.Sprintf("%v", len(payload))
-				query, ok := queries[header.ResponseTo]
-				if ok {
-					fmt.Print(myutil.GetSlowQueryLogHeader(opInfo))
-					fmt.Print(query)
-					delete(queries, header.ResponseTo)
-				} else {
-					if verbose {
-						fmt.Printf("   Orphaned reply for %v\n", header.ResponseTo)
+				if startingFrom == 0 {
+					elapsed := processReplyPayload(payload, header)
+					opInfo := make(myutil.OpInfo)
+					opInfo["millis"] = fmt.Sprintf("%f", elapsed)
+					opInfo["sent"] = fmt.Sprintf("%v", len(payload))
+					query, ok := queries[header.ResponseTo]
+					if ok {
+						fmt.Print(myutil.GetSlowQueryLogHeader(opInfo))
+						fmt.Print(query)
+						delete(queries, header.ResponseTo)
+					} else {
+						if verbose {
+							//json := make(map[string]interface{})
+							//var mbson []bson.M
+							//bson.Unmarshal(al.Payload(), json)
+							//aux_output, _, _ := myutil.RecurseJsonMap(json)
+							fmt.Printf("   Orphaned reply for %v\n", header.ResponseTo)
+							//fmt.Printf("   byte array to string: %v", string(payload[:]))
+							//fmt.Printf("   recurse json for byte array: %v", aux_output)
+						}
 					}
+				} else if verbose {
+					fmt.Printf("  Not printing reply to GetMore for existing cursor")
 				}
 			case OpUpdate:
 				queries[header.RequestID] = processUpdatePayload(payload, header)

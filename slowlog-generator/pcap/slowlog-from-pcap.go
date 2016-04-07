@@ -317,10 +317,12 @@ func dump(src gopacket.PacketDataSource) {
 	var dec gopacket.Decoder
 	var ok bool
 	if dec, ok = gopacket.DecodersByLayerName["Ethernet"]; !ok {
-		log.Fatalln("No decoder named", "Ethernet")
+		if dec, ok = gopacket.DecodersByLayerName["Loopback"]; !ok {
+			log.Fatalln("No decoder named", "Ethernet or Loopback")
+		}
 	}
 	source := gopacket.NewPacketSource(src, dec)
-	//source.Lazy = *lazy
+	source.Lazy = true
 	source.NoCopy = true
 	for packet := range source.Packets() {
 		//fmt.Println(packet.ApplicationLayer().Payload())

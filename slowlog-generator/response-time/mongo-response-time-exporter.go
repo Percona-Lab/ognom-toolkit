@@ -137,14 +137,16 @@ func processReplyPayload(data []byte, header messageHeader) (output float64) {
 	start, ok := startTimes[header.ResponseTo]
 	if ok {
 		elapsed = time.Since(start).Seconds()
-		delete(startTimes, header.RequestID)
-		deleted, dok := debugInfo["deleted"]
-		if dok {
-			debugInfo["deleted"] = deleted + 1
-		} else {
-			debugInfo["deleted"] = 1
+		delete(startTimes, header.ResponseTo)
+		if verbose {
+			deleted, dok := debugInfo["deleted"]
+			if dok {
+				debugInfo["deleted"] = deleted + 1
+			} else {
+				debugInfo["deleted"] = 1
+			}
 		}
-	} else {
+	} else if verbose {
 		notdeleted, nok := debugInfo["notdeleted"]
 		if nok {
 			debugInfo["notdeleted"] = notdeleted + 1
@@ -231,11 +233,13 @@ func process(src gopacket.PacketDataSource) {
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)
 			default:
 				startTimes[header.RequestID] = time.Now()
-				added, aok := debugInfo["added"]
-				if aok {
-					debugInfo["added"] = added + 1
-				} else {
-					debugInfo["added"] = 1
+				if verbose {
+					added, aok := debugInfo["added"]
+					if aok {
+						debugInfo["added"] = added + 1
+					} else {
+						debugInfo["added"] = 1
+					}
 				}
 			}
 		}

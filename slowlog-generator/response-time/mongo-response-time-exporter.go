@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
 	"strconv"
 	"strings"
 	"syscall"
@@ -22,12 +23,21 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-var iface = flag.String("i", "eth0", "Interface to read packets from")
-var fname = flag.String("r", "", "Filename to read from, overrides -i")
-var snaplen = flag.Int("s", 65536, "Snap length (number of bytes max to read per packet")
-var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
-var port = flag.Int("p", 9119, "The http port to listen on")
-var verbose = 1
+var iface = "eth0"
+var fname = ""
+var snaplen = 65536
+var tstype = ""
+var port = 9119
+var verbose = false
+
+func init() {
+	flag.StringVar(&iface, "i", "eth0", "Interface to read packets from")
+	flag.StringVar(&fname, "r", "", "Filename to read from, overrides -i")
+	flag.IntVar(&snaplen, "s", 65536, "Number of max bytes to read per packet")
+	flag.StringVar(&tstype, "t", "", "Type of timestamp to use")
+	flag.IntVar(&port, "P", 9119, "The port number to listen on ")
+	flag.BoolVar(&verbose, "v", false, "Enable verbose mode")
+}
 
 // the currently max seen response time value
 var max = 0.0
@@ -117,14 +127,30 @@ func (m *messageHeader) FromWire(b []byte) {
 // this map will store the start time for all requests. K:RequestId, v:StartTime
 var startTimes = make(map[int32]time.Time)
 
+// this map will store debugging counters
+var debugInfo = make(map[string]int32)
+
 // my functions now
 
 func processReplyPayload(data []byte, header messageHeader) (output float64) {
 	var elapsed float64 = 0
-	start, ok := startTimes[header.RequestID]
+	start, ok := startTimes[header.ResponseTo]
 	if ok {
 		elapsed = time.Since(start).Seconds()
 		delete(startTimes, header.RequestID)
+		deleted, dok := debugInfo["deleted"]
+		if dok {
+			debugInfo["deleted"] = deleted + 1
+		} else {
+			debugInfo["deleted"] = 1
+		}
+	} else {
+		notdeleted, nok := debugInfo["notdeleted"]
+		if nok {
+			debugInfo["notdeleted"] = notdeleted + 1
+		} else {
+			debugInfo["notdeleted"] = 1
+		}
 	}
 	return elapsed
 }
@@ -134,7 +160,7 @@ func startWebServer() {
 	prometheus.MustRegister(rtHistogram)
 	prometheus.MustRegister(rtSummary)
 	prometheus.MustRegister(rtMax)
-	strport := strconv.Itoa(*port)
+	strport := strconv.Itoa(port)
 	fmt.Println("Starting HTTP server on port " + strport)
 	http.Handle("/metrics", handler)
 	http.ListenAndServe(":"+strport, nil)
@@ -146,6 +172,15 @@ func sighandler() {
 		sighupped = true
 		time.Sleep(30 * time.Second)
 		sighupped = false
+	}
+}
+
+func printDebugInfo() {
+	if verbose {
+		for {
+			fmt.Printf("goroutine count: %d, startTimes size: %d, additions/deletes to/from startTimes: %d/%d. Not deleted due to not ok: %d\n", runtime.NumGoroutine(), len(startTimes), debugInfo["added"], debugInfo["deleted"], debugInfo["notdeleted"])
+			time.Sleep(30 * time.Second)
+		}
 	}
 }
 
@@ -178,7 +213,7 @@ func process(src gopacket.PacketDataSource) {
 			header.RequestID = getInt32(payload, 4)
 			header.ResponseTo = getInt32(payload, 8)
 			header.OpCode = OpCode(getInt32(payload, 12))
-			startTimes[header.RequestID] = time.Now()
+			//startTimes[header.RequestID] = time.Now()
 			//fmt.Printf("OpCode == %v\n", header.OpCode)
 			switch header.OpCode {
 			case OpReply:
@@ -195,6 +230,13 @@ func process(src gopacket.PacketDataSource) {
 				rtMax.Set(max)
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)
 			default:
+				startTimes[header.RequestID] = time.Now()
+				added, aok := debugInfo["added"]
+				if aok {
+					debugInfo["added"] = added + 1
+				} else {
+					debugInfo["added"] = 1
+				}
 			}
 		}
 	}
@@ -210,28 +252,29 @@ func main() {
 	go startWebServer()
 	go sighandler()
 	flag.Parse()
-	if *fname != "" {
-		if handle, err = pcap.OpenOffline(*fname); err != nil {
+	go printDebugInfo()
+	if fname != "" {
+		if handle, err = pcap.OpenOffline(fname); err != nil {
 			log.Fatal("PCAP OpenOffline error:", err)
 		}
 	} else {
 		// This is a little complicated because we want to allow all possible options
 		// for creating the packet capture handle... instead of all this you can
 		// just call pcap.OpenLive if you want a simple handle.
-		inactive, err := pcap.NewInactiveHandle(*iface)
+		inactive, err := pcap.NewInactiveHandle(iface)
 		if err != nil {
 			log.Fatal("could not create: %v", err)
 		}
 		defer inactive.CleanUp()
-		if err = inactive.SetSnapLen(*snaplen); err != nil {
+		if err = inactive.SetSnapLen(snaplen); err != nil {
 			log.Fatal("could not set snap length: %v", err)
 		} else if err = inactive.SetPromisc(true); err != nil {
 			log.Fatal("could not set promisc mode: %v", err)
 		} else if err = inactive.SetTimeout(time.Second); err != nil {
 			log.Fatal("could not set timeout: %v", err)
 		}
-		if *tstype != "" {
-			if t, err := pcap.TimestampSourceFromString(*tstype); err != nil {
+		if tstype != "" {
+			if t, err := pcap.TimestampSourceFromString(tstype); err != nil {
 				log.Fatalf("Supported timestamp types: %v", inactive.SupportedTimestamps())
 			} else if err := inactive.SetTimestampSource(t); err != nil {
 				log.Fatalf("Supported timestamp types: %v", inactive.SupportedTimestamps())

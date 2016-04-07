@@ -161,7 +161,6 @@ func process(src gopacket.PacketDataSource) {
 	//source.Lazy = *lazy
 	source.NoCopy = true
 	lastMaxPeriodStart := time.Now()
-	handledSighup := false
 	for packet := range source.Packets() {
 		al := packet.ApplicationLayer()
 		if al != nil {
@@ -190,11 +189,8 @@ func process(src gopacket.PacketDataSource) {
 				if !sighupped && (r > max || time.Since(lastMaxPeriodStart).Seconds() >= 5) {
 					max = r
 					lastMaxPeriodStart = time.Now()
-				} else if sighupped && !handledSighup {
-					max = max * -1
-					handledSighup = true
-				} else if !sighupped {
-					handledSighup = false
+				} else if sighupped {
+					max = -0.0005
 				}
 				rtMax.Set(max)
 				//fmt.Printf("%s,%20.10f\n", time.Now().Format("15:04:05"), rt)

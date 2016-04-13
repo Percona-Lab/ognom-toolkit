@@ -128,7 +128,7 @@ func (m *messageHeader) FromWire(b []byte) {
 var startTimes = make(map[int32]time.Time)
 
 // this map will store debugging counters
-var debugInfo = make(map[string]int32)
+var debugInfo = make(map[string]int64)
 
 // my functions now
 
@@ -172,6 +172,7 @@ func sighandler() {
 	for {
 		<-sigs
 		sighupped = true
+		startTimes = make(map[int32]time.Time)
 		time.Sleep(30 * time.Second)
 		sighupped = false
 	}

@@ -1,4 +1,3 @@
-
 function getFilledDatePart(datepart) {
     return datepart < 10 ? "0" + datepart : datepart;
 }
@@ -72,7 +71,7 @@ function getReplicationSummary(db) {
         result["summaryExtra"] = "The set has " + secondaries + " secondaries and " + arbiters + " arbiters";
     }
     return result;
-} 
+}
 
 function getShardingSummary() {
     var result = {};
@@ -118,7 +117,7 @@ function getShardsInfo() {
     return result;
 }
 
-print(getHeader("Percona Toolkit MongoDB Summary Report",FILLER,LENGTH));
+print(getHeader("Ognom Toolkit MongoDB Summary Report",FILLER,LENGTH));
 var basicInfo = getInstanceBasicInfo(db);
 print("Report generated on " + basicInfo["hostname"] + " at " + basicInfo["serverTime"]);
 print(basicInfo["inprog"]);

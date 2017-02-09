@@ -1,4 +1,3 @@
-
   var BASE_PORT=2800;
   var HOSTNAME="telecaster.local";
   rs.initiate();
@@ -12,4 +11,4 @@
           }
           rs.config();
       }
-  ); 
+  );

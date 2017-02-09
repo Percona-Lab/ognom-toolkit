@@ -1,4 +1,3 @@
-
 function getHeader(header, filler, length) {
     var result = "\n# " + header + " ";
     if (result.length < length) {

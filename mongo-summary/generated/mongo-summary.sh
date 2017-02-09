@@ -1,4 +1,3 @@
-
  extra=0
  [ "$1" == "--extra" ] && {
      extra=1

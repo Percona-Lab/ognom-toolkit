@@ -1,4 +1,3 @@
-
 _MST_MONGOD=${MST_MONGOD:-mongod}
 _MST_MONGOS=${MST_MONGOS:-mongos}
 _MST_MONGO=${MST_MONGO:-mongo}

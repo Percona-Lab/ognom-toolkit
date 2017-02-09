@@ -58,7 +58,7 @@ function getHeader(header, filler, length) {
 
 This function can be used like so: 
 #+BEGIN_SRC js
-print(getHeader("Percona Toolkit MongoDB Summary Report","#",62))
+print(getHeader("Ognom Toolkit MongoDB Summary Report","#",62))
 #+END_SRC
 
 Length will always be the same and is specified by the following variable: 
@@ -299,7 +299,7 @@ This is not a function, because it is what will be run by the mongo shell when i
 
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
-print(getHeader("Percona Toolkit MongoDB Summary Report",FILLER,LENGTH));
+print(getHeader("Ognom Toolkit MongoDB Summary Report",FILLER,LENGTH));
 var basicInfo = getInstanceBasicInfo(db);
 print("Report generated on " + basicInfo["hostname"] + " at " + basicInfo["serverTime"]);
 print(basicInfo["inprog"]);

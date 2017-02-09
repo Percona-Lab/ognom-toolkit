@@ -45,20 +45,20 @@ so I need a function to generate similar lines.
 
 #+NAME: getHeader
 #+BEGIN_SRC js
-  function getHeader(header, filler, length) {
-      var result = "\n# " + header + " ";
-      if (result.length < length) {
-          for (i=result.length; i<length; i++) {
-              result += filler
-          }
-      }
-      return result + "\n";
-  }
+function getHeader(header, filler, length) {
+    var result = "\n# " + header + " ";
+    if (result.length < length) {
+        for (i=result.length; i<length; i++) {
+            result += filler
+        }
+    }
+    return result + "\n";
+}
 #+END_SRC
 
 This function can be used like so: 
 #+BEGIN_SRC js
-  print(getHeader("Percona Toolkit MongoDB Summary Report","#",62))
+print(getHeader("Ognom Toolkit MongoDB Summary Report","#",62))
 #+END_SRC
 
 Length will always be the same and is specified by the following variable: 
@@ -76,17 +76,17 @@ var FILLER = "#";
 I don't know if this is already available on javascript, but I need a function to print a number and, if needed, prefix it with a 0. 
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
-  function getFilledDatePart(datepart) {
-      return datepart < 10 ? "0" + datepart : datepart;
-  }
+function getFilledDatePart(datepart) {
+    return datepart < 10 ? "0" + datepart : datepart;
+}
 #+END_SRC
 
 I also need a function to determine if I'm connected to mongos or mongod. For now, I think running isMaster and looking for "msg" seems reliable, though I have not find it documented yet. 
 #+NAME: isMongos 
 #+BEGIN_SRC js
-  function isMongos() {
-      return db.runCommand({isMaster: 1})["msg"] == "isdbgrid";
-  }
+function isMongos() {
+    return db.runCommand({isMaster: 1})["msg"] == "isdbgrid";
+}
 #+END_SRC
 
 Now, let's write these functions to both scripts.
@@ -112,63 +112,65 @@ This section contains functions used to obtain information about a mongodb/tokum
 Let's start with a function to get the current date from [[http://docs.mongodb.org/manual/reference/method/db.hostInfo/#db.hostInfo][hostInfo]], and some basic info about operations in progress. 
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
-  function getInstanceBasicInfo(db) {
-      var result = {};
-      var aux;
-      aux = db.hostInfo()["system"]["currentTime"];
-      result["serverTime"] = aux.getFullYear() + "-" + getFilledDatePart(aux.getMonth()) + "-" + getFilledDatePart(aux.getDay()) + " " + aux.toTimeString();
-      aux = db.currentOp()["inprog"];
-      result["inprog"] = aux.length + " operations in progress";
-      result["hostname"] = db.hostInfo()["system"]["hostname"];
-      result["serverStatus"] = db._adminCommand({serverStatus:1});
-      result["parameters"] = db._adminCommand({getParameter:'*'})
-      result["cmdLineOpts"] = db._adminCommand({getCmdLineOpts:1})
-      return result;
-  }
+function getInstanceBasicInfo(db) {
+    var result = {}
+    var aux
+    aux = db.hostInfo()["system"]["currentTime"]
+    result["serverTime"] = aux.getFullYear() + "-" + getFilledDatePart(aux.getMonth()) + "-" + getFilledDatePart(aux.getDay()) + " " + aux.toTimeString()
+    aux = db.currentOp()["inprog"]
+    result["inprog"] = aux.length + " operations in progress"
+    result["hostname"] = db.hostInfo()["system"]["hostname"]
+    result["serverStatus"] = db._adminCommand({serverStatus:1})
+    result["parameters"] = db._adminCommand({getParameter:'*'})
+    result["cmdLineOpts"] = db._adminCommand({getCmdLineOpts:1})
+    return result
+}
 #+END_SRC
 
 Now get some info about replication. We want to know if we're a standalone instance (which should only happen in dev/testing) or part of a replica set.  
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
-  function getReplicationSummary(db) {
-      var result = {};
-      var rstatus = db._adminCommand("replSetGetStatus");
-      result["ok"] = rstatus["ok"];
-      if (rstatus["ok"]==0) {
-          // This is either not a replica set, or there is an error
-          if (rstatus["errmsg"] == "not running with --replSet") {
-             result["summary"] = "Standalone mongod" 
-          } else {
-              result["summary"] = "Replication error: " + rstatus["errmsg"]
-          }
-          result["members"] = [];
-      } else {
-          // This is a replica set
-          var secondaries = 0;
-          var arbiters = 0;
-	  result["summary"] = "This is a replica set but I could not figure out this node's role"
-          result["members"] = [];
-          rstatus["members"].forEach(
-              function (element, index, array) {
-                  if (element["self"]) {
-                      result["summary"] = "Node is " + element["stateStr"] + " in a " + rstatus["members"].length + " members replica set"
-		      if (!result["summary"]) {
-			  result["summary"] = "This is a replica set, but something went wrong when trying to figure out this node's role"
-		      }
-                  } else {
-                      if (element["state"] == 2) {
-                          secondaries++;
-                      } else if (element["state"] == 7) {
-                          arbiters++;
-                      }
-                  }
-                  result["members"].push(element["name"]);
-              }
-          )
-          result["summaryExtra"] = "The set has " + secondaries + " secondaries and " + arbiters + " arbiters";
-      }
-      return result;
-  } 
+function getReplicationSummary(db) {
+    var result = {};
+    var rstatus = db._adminCommand("replSetGetStatus");
+    result["ok"] = rstatus["ok"];
+    if (rstatus["ok"]==0) {
+        // This is either not a replica set, or there is an error
+        if (rstatus["errmsg"] == "not running with --replSet") {
+           result["summary"] = "Standalone mongod" 
+           result["summaryExtra"] = ""
+        } else {
+            result["summary"] = "Replication error: " + rstatus["errmsg"]
+            result["summaryExtra"] = ""
+        }
+        result["members"] = [];
+    } else {
+        // This is a replica set
+        var secondaries = 0;
+        var arbiters = 0;
+  result["summary"] = "This is a replica set but I could not figure out this node's role"
+        result["members"] = [];
+        rstatus["members"].forEach(
+            function (element, index, array) {
+                if (element["self"]) {
+                    result["summary"] = "Node is " + element["stateStr"] + " in a " + rstatus["members"].length + " members replica set"
+	      if (!result["summary"]) {
+		  result["summary"] = "This is a replica set, but something went wrong when trying to figure out this node's role"
+	      }
+                } else {
+                    if (element["state"] == 2) {
+                        secondaries++;
+                    } else if (element["state"] == 7) {
+                        arbiters++;
+                    }
+                }
+                result["members"].push(element["name"]);
+            }
+        )
+        result["summaryExtra"] = "The set has " + secondaries + " secondaries and " + arbiters + " arbiters";
+    }
+    return result;
+} 
 #+END_SRC 
 
 ** mongos info functions
@@ -179,28 +181,28 @@ We can get this info from sh.status():
 
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
-  function getShardingSummary() {
-      var result = {};
-      result["shards"] = [];
-      result["shardedDatabases"] = [];
-      result["unshardedDatabases"] = [];
-      var con = db.getMongo().getDB("config");
-      con.databases.find().forEach(
-          function (element, index, array) {
-              if (element["partitioned"]) {
-                  result["shardedDatabases"].push(element);
-              } else {
-                  result["unshardedDatabases"].push(element);
-              }
-          }
-      );
-      con.shards.find().forEach (
-          function (element, index, array) {
-              result["shards"].push({_id: element["_id"], host: element["host"].slice(element["host"].indexOf("/")+1,element["host"].length)});
-          }
-      );
-      return result;
-  }
+function getShardingSummary() {
+    var result = {};
+    result["shards"] = [];
+    result["shardedDatabases"] = [];
+    result["unshardedDatabases"] = [];
+    var con = db.getMongo().getDB("config");
+    con.databases.find().forEach(
+        function (element, index, array) {
+            if (element["partitioned"]) {
+                result["shardedDatabases"].push(element);
+            } else {
+                result["unshardedDatabases"].push(element);
+            }
+        }
+    );
+    con.shards.find().forEach (
+        function (element, index, array) {
+            result["shards"].push({_id: element["_id"], host: element["host"].slice(element["host"].indexOf("/")+1,element["host"].length)});
+        }
+    );
+    return result;
+}
 #+END_SRC
 
 Now we need to use getShardingSummary() to get a list of shards, and connect to each shard to run the mongod info functions. 
@@ -210,26 +212,26 @@ In some cases, the host element for a shard may be a list of hosts (if the shard
 
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
-  function getShardsInfo() {
-      var shardingSummary = getShardingSummary();
-      var result = {};
-      result["shards"] = [];
-      shardingSummary["shards"].forEach(
-          function (element, index, array) {
-              element["host"].split(",").forEach(
-                  function (element, index, array) {
-                      var db = new Mongo(element).getDB("local")
-                      result["shards"].push({
-                      host: element,
-                      hostInfo: getInstanceBasicInfo(db),
-                      replicationSummary: getReplicationSummary(db)
-                      })
-                  }
-              ) 
-          }
-      );
-      return result;
-  }
+function getShardsInfo() {
+    var shardingSummary = getShardingSummary();
+    var result = {};
+    result["shards"] = [];
+    shardingSummary["shards"].forEach(
+        function (element, index, array) {
+            element["host"].split(",").forEach(
+                function (element, index, array) {
+                    var db = new Mongo(element).getDB("local")
+                    result["shards"].push({
+                    host: element,
+                    hostInfo: getInstanceBasicInfo(db),
+                    replicationSummary: getReplicationSummary(db)
+                    })
+                }
+            ) 
+        }
+    );
+    return result;
+}
 #+END_SRC
 
 ** gathering additional information 
@@ -239,55 +241,55 @@ Because we want this to be optionally included, it will get sent to a separate j
 
 #+HEADERS: :tangle mongo-summary-extra.js
 #+BEGIN_SRC js
-  function printExtraDiagnosticsInfo() {
-      print(getHeader("Extra info",FILLER,LENGTH));
+function printExtraDiagnosticsInfo() {
+    print(getHeader("Extra info",FILLER,LENGTH));
 #+END_SRC
 
 Let's start with getting a list of databases and their collections: 
 #+HEADERS: :tangle mongo-summary-extra.js
 #+BEGIN_SRC js
-      db.adminCommand('listDatabases')["databases"].forEach(
-          function (element, array, index) {
-              var auxdb = db.getSiblingDB(element["name"]);
-              var cols = auxdb.getCollectionNames();
-              print(element["name"] + " has " + cols.length + " collections and " + element["sizeOnDisk"] + " bytes on disk");
-              if (cols.length > 0) {
-                  print("Collections: ");
-                  cols.forEach(
-                      function (element, array, index) {
-                          print("   " + element);
-			  auxdb.getCollectionNames().forEach(function(collection) {
-			     indexes = auxdb[collection].getIndexes();
-			     print("Indexes for " + collection + ":");
-			     printjson(indexes);
-			  });
-                      }
-                  );
-              }
-          }
-      );
+    db.adminCommand('listDatabases')["databases"].forEach(
+        function (element, array, index) {
+            var auxdb = db.getSiblingDB(element["name"]);
+            var cols = auxdb.getCollectionNames();
+            print(element["name"] + " has " + cols.length + " collections and " + element["sizeOnDisk"] + " bytes on disk");
+            if (cols.length > 0) {
+                print("Collections: ");
+                cols.forEach(
+                    function (element, array, index) {
+                        print("   " + element);
+		  auxdb.getCollectionNames().forEach(function(collection) {
+		     indexes = auxdb[collection].getIndexes();
+		     print("Indexes for " + collection + ":");
+		     printjson(indexes);
+		  });
+                    }
+                );
+            }
+        }
+    );
 #+END_SRC
 
 Now print some raw json (some of which we've summarized already) depending on the node type we're on
 #+HEADERS: :tangle mongo-summary-extra.js
 #+BEGIN_SRC js
-      if (isMongos()) {
-          sh.status();
-      } else {
-          printjson(db.adminCommand('replSetGetStatus')); 
-      }
-      db.isMaster();
-      print(getHeader("Logs",FILLER,LENGTH));
-      db.adminCommand({'getLog': '*'})["names"].forEach(
-          function (element, array, index) {
-              db.adminCommand({'getLog': element})["log"].forEach(
-                  function (element, array, index) {
-                      print(element);
-                  }
-              );
-          }
-      );
-  }
+    if (isMongos()) {
+        sh.status();
+    } else {
+        printjson(db.adminCommand('replSetGetStatus')); 
+    }
+    db.isMaster();
+    print(getHeader("Logs",FILLER,LENGTH));
+    db.adminCommand({'getLog': '*'})["names"].forEach(
+        function (element, array, index) {
+            db.adminCommand({'getLog': element})["log"].forEach(
+                function (element, array, index) {
+                    print(element);
+                }
+            );
+        }
+    );
+}
 #+END_SRC
 
 ** Presentation 
@@ -297,56 +299,56 @@ This is not a function, because it is what will be run by the mongo shell when i
 
 #+HEADERS: :tangle mongo-summary.js
 #+BEGIN_SRC js
-  print(getHeader("Percona Toolkit MongoDB Summary Report",FILLER,LENGTH));
-  var basicInfo = getInstanceBasicInfo(db);
-  print("Report generated on " + basicInfo["hostname"] + " at " + basicInfo["serverTime"]);
-  print(basicInfo["inprog"]);
-  if (isMongos()) {
-      print(getHeader("Sharding Summary (mongos detected)",FILLER,LENGTH));
-      basicInfo = getShardingSummary();
-      print("Detected " + basicInfo["shards"].length + " shards");
-      print("Sharded databases: ");
-      basicInfo["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
-      print("");
-      print("Unsharded databases: ");
-      basicInfo["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
-      print("");
-      print(getHeader("Shards detail",FILLER,LENGTH));
-      getShardsInfo()["shards"].forEach(
-          function (element, array, index) {
-              print("Shard " + element["_id"] + " @ " + element["host"]);
-              print("(" + element["hostInfo"]["inprog"] + ")");
-              print(element["replicationSummary"]["summary"]);
-              print(element["replicationSummary"]["summaryExtra"]);
-              print("");
-          }
-      );
-  } else { 
-      print(getHeader("Replication summary",FILLER,LENGTH));
-      replicationSummary = getReplicationSummary(db);
-      if (replicationSummary["summary"]) {
-	  print(replicationSummary["summary"])
-      } else {
-	  print("Something is wrong with the replication summary (it is undefined)")
-      }
-      if (replicationSummary["summaryExtra"]) {
-	  print(replicationSummary["summaryExtra"]);
-      }
-      if (replicationSummary["members"].length > 0) {
-          print(getHeader("Replica set members",FILLER,LENGTH));
-          replicationSummary["members"].forEach(
-              function(member, array, index) {
-                  print(member);
-              }
-          );
-      }
-  } 
-  print(getHeader("Server Status",FILLER,LENGTH))
-  printjson(basicInfo["serverStatus"]);
-  print(getHeader("Server Parameters",FILLER,LENGTH))
-  printjson(basicInfo["parameters"]);
-  print(getHeader("Command Line Options",FILLER,LENGTH))
-  printjson(basicInfo["cmdLineOpts"]);
+print(getHeader("Ognom Toolkit MongoDB Summary Report",FILLER,LENGTH));
+var basicInfo = getInstanceBasicInfo(db);
+print("Report generated on " + basicInfo["hostname"] + " at " + basicInfo["serverTime"]);
+print(basicInfo["inprog"]);
+if (isMongos()) {
+    print(getHeader("Sharding Summary (mongos detected)",FILLER,LENGTH));
+    shardsInfo = getShardingSummary();
+    print("Detected " + shardsInfo["shards"].length + " shards");
+    print("Sharded databases: ");
+    shardsInfo["shardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+    print("");
+    print("Unsharded databases: ");
+    shardsInfo["unshardedDatabases"].forEach(function (element, array, index) {print("  " + element["_id"]);});
+    print("");
+    print(getHeader("Shards detail",FILLER,LENGTH));
+    getShardsInfo()["shards"].forEach(
+        function (element, array, index) {
+            print("Shard " + element["_id"] + " @ " + element["host"]);
+            print("(" + element["hostInfo"]["inprog"] + ")");
+            print(element["replicationSummary"]["summary"]);
+            print(element["replicationSummary"]["summaryExtra"]);
+            print("");
+        }
+    );
+} else { 
+    print(getHeader("Replication summary",FILLER,LENGTH));
+    replicationSummary = getReplicationSummary(db);
+    if (replicationSummary["summary"]) {
+  print(replicationSummary["summary"])
+    } else {
+  print("Something is wrong with the replication summary (it is undefined)")
+    }
+    if (replicationSummary["summaryExtra"]) {
+  print(replicationSummary["summaryExtra"]);
+    }
+    if (replicationSummary["members"].length > 0) {
+        print(getHeader("Replica set members",FILLER,LENGTH));
+        replicationSummary["members"].forEach(
+            function(member, array, index) {
+                print(member);
+            }
+        );
+    }
+} 
+print(getHeader("Server Status",FILLER,LENGTH))
+printjson(basicInfo["serverStatus"]);
+print(getHeader("Server Parameters",FILLER,LENGTH))
+printjson(basicInfo["parameters"]);
+print(getHeader("Command Line Options",FILLER,LENGTH))
+printjson(basicInfo["cmdLineOpts"]);
 #+END_SRC
 
 We also need presentation code for the extra script. 
@@ -359,13 +361,13 @@ printExtraDiagnosticsInfo();
 And finally, create a shell script that can invoke the js with the right arguments
 #+HEADERS: :tangle mongo-summary.sh
 #+BEGIN_SRC sh
-    extra=0
-    [ "$1" == "--extra" ] && {
-        extra=1
-        shift
-    }
-    mongo mongo-summary.js $*
-    [ $extra -eq 1 ] && mongo mongo-summary-extra.js $*
+ extra=0
+ [ "$1" == "--extra" ] && {
+     extra=1
+     shift
+ }
+ mongo mongo-summary.js $*
+ [ $extra -eq 1 ] && mongo mongo-summary-extra.js $*
 #+END_SRC
 ** Tests
 This section includes the test suite for the utilities. 
@@ -378,7 +380,16 @@ We test the following scenarios:
 - sharded cluster
 - sharded cluster of replica sets
 
-At this moment the tests only run the script, but there is no post validation. The ultimate goal is to validate the output files against pre supplied ones. 
+At this moment the tests only run the script and perform very primitive validations. The ultimate goal is to validate the output files against pre supplied ones. 
+
+If you have multiple mongodb versions available and would like to test a specific one, set the MST_MONGO, MST_MONGOD and MST_MONGOS variables to the full path to mongo, mongod and mongos respectively, before running the scripts. If those are unset, we default to mongo, mongod and mongos: 
+
+#+HEADERS: :tangle mongo-summary-test.sh
+#+BEGIN_SRC sh
+_MST_MONGOD=${MST_MONGOD:-mongod}
+_MST_MONGOS=${MST_MONGOS:-mongos}
+_MST_MONGO=${MST_MONGO:-mongo}
+#+END_SRC 
 
 We'll need a global variable pointing to the root directory where we'll be creating the datadirs for each mongod we'll start: 
 #+HEADERS: :tangle mongo-summary-test.sh
@@ -411,11 +422,11 @@ Creating a dbpath is just mkdir, with the precaution that if it exists, we'll pu
 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  function mst_createDatadir()
-  {
-     test -d $1 && rm -rf $mst_DBPATH_ROOT/$1
-     mkdir -p $mst_DBPATH_ROOT/$1
-  }
+function mst_createDatadir()
+{
+   test -d $1 && rm -rf $mst_DBPATH_ROOT/$1
+   mkdir -p $mst_DBPATH_ROOT/$1
+}
 #+END_SRC
 
 Starting an instance involves creating its datadir, invoking the right command (mongod or mongos) and setting the dbpath and port arguments. 
@@ -428,28 +439,46 @@ This function takes the following arguments:
 If program is mongos, then we create the datadir (as it will be used for logging), but we don't include the --dbpath option, as mongos does not recognize it. 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  function mst_startInstance()
-  {
-      program=$1
-      dbpath=$2
-      port=$3
-      dbpath_arg=""
-      mst_createDatadir $dbpath
-      [ "$program" != "mongos" ] && dbpath_arg="--dbpath $mst_DBPATH_ROOT/$dbpath"
-      shift; shift; shift
-      $program $dbpath_arg --port=$port --logpath $mst_DBPATH_ROOT/$dbpath/log --fork --pidfilepath $mst_DBPATH_ROOT/$dbpath/pid $*
-      sleep 5
-  }
+function mst_startInstance()
+{
+    program=$1
+    dbpath=$2
+    port=$3
+    dbpath_arg=""
+    mst_createDatadir $dbpath
+    [ $(echo $program|grep -c mongos) -eq 0 ] && dbpath_arg="--dbpath $mst_DBPATH_ROOT/$dbpath"
+    shift; shift; shift
+    $program $dbpath_arg --port=$port --logpath $mst_DBPATH_ROOT/$dbpath/log --fork --pidfilepath $mst_DBPATH_ROOT/$dbpath/pid $*
+    sleep 5
+}
 #+END_SRC
 
 To stop (and destroy) an instance we just need the dbpath, which is $1 for this function:  
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  function mst_stopInstance()
-  {
-      kill $(cat $mst_DBPATH_ROOT/$1/pid)
-      rm -rf $mst_DBPATH_ROOT/$1
-  }
+function mst_stopInstance()
+{
+    kill $(cat $mst_DBPATH_ROOT/$1/pid)
+    rm -rf $mst_DBPATH_ROOT/$1
+}
+#+END_SRC
+
+This simple function receives a file name and a list of strings, and validates that they are found on the file: 
+#+HEADERS: :tangle mongo-summary-test.sh
+#+BEGIN_SRC sh
+function mst_validateOutput()
+{
+   f=$1; shift
+   ok=0
+   while [ -n "$1" ]; do
+       grep "$1" $f>/dev/null || {
+	   ok=1
+	   echo "$1 not found on $f">&2
+       }
+      shift
+   done
+   return $ok
+}
 #+END_SRC
 
 Now we're ready to go through the test cases in sequence: 
@@ -460,12 +489,13 @@ We just need to:
 - terminate the instance and remove the datadir
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  function mst_test_standalone_mongod()
-  {
-      mst_startInstance mongod standalone $mst_BASE_PORT
-      sh mongo-summary.sh --extra --port $mst_BASE_PORT > test_standalone_mongod.result.txt
-      mst_stopInstance standalone
-  }
+function mst_test_standalone_mongod()
+{
+    mst_startInstance $_MST_MONGOD standalone $mst_BASE_PORT
+    sh mongo-summary.sh --extra --port $mst_BASE_PORT > test_standalone_mongod.result.txt
+    mst_stopInstance standalone
+    mst_validateOutput test_standalone_mongod.result.txt "Standalone mongod" version backgroundFlushing "Server Parameters" argv "local has" Logs
+}
 #+END_SRC
 *** replica set
 For this test we'll start four instances: 
@@ -474,44 +504,45 @@ For this test we'll start four instances:
 - an arbiter 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  function mst_test_replica_test()
-  {
-      nodes="primary secondary1 secondary2 arbiter"
-      port_offset=0
-      for node in $nodes; do
-          mst_startInstance mongod $node $((mst_BASE_PORT + port_offset)) --replSet "test"
-          port_offset=$((port_offset + 1))
-      done
+function mst_test_replica_set()
+{
+    nodes="primary secondary1 secondary2 arbiter"
+    port_offset=0
+    for node in $nodes; do
+        mst_startInstance $_MST_MONGOD $node $((mst_BASE_PORT + port_offset)) --replSet "test"
+        port_offset=$((port_offset + 1))
+    done
 #+END_SRC
 Now, we need to configure the replica set. 
 
 #+HEADERS: :tangle mongo-summary-test-replset.js :noweb yes
 #+BEGIN_SRC js
-    <<js-tests-header>>
-    rs.initiate();
-    var prefix = HOSTNAME+":"+BASE_PORT;
-    [ prefix+0 ,prefix+1, prefix+2, prefix+3].forEach(
-        function (element, array, index) {
-            if (element==HOSTNAME+":"+BASE_PORT+3) {
-                rs.add(element,true);
-            } else {
-                rs.add(element);
-            }
-            rs.config();
-        }
-    ); 
+  <<js-tests-header>>
+  rs.initiate();
+  var prefix = HOSTNAME+":"+BASE_PORT;
+  [ prefix+0 ,prefix+1, prefix+2, prefix+3].forEach(
+      function (element, array, index) {
+          if (element==HOSTNAME+":"+BASE_PORT+3) {
+              rs.add(element,true);
+          } else {
+              rs.add(element);
+          }
+          rs.config();
+      }
+  ); 
 #+END_SRC
 
 And now we're ready to generate the report and stop the instances. 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-      mongo --port $mst_BASE_PORT mongo-summary-test-replset.js
-      echo "Sleeping 2 seconds wainting for the replica set configuration to get applied" && sleep 2
-      sh mongo-summary.sh --extra --port $mst_BASE_PORT > test_replica_set.result.txt
-      for node in $nodes; do
-          mst_stopInstance $node
-      done
-  }
+    $_MST_MONGO --port $mst_BASE_PORT mongo-summary-test-replset.js
+    echo "Sleeping 2 seconds waiting for the replica set configuration to get applied" && sleep 2
+    sh mongo-summary.sh --extra --port $mst_BASE_PORT > test_replica_set.result.txt
+    for node in $nodes; do
+        mst_stopInstance $node
+    done
+    mst_validateOutput test_replica_set.result.txt "Node is PRIMARY" 28002 connections "Server Parameters" argv "local has" 
+}
 #+END_SRC
 *** sharded cluster
 For this test we'll start six instances: 
@@ -524,54 +555,55 @@ For this test we'll start six instances:
 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  function mst_test_shard_pair()
-  {
-      nodes="shard1 shard2 config1 config2 config3 mongos"
-      port_offset=0
-      config1_port=$((mst_BASE_PORT + 2))
-      config2_port=$((mst_BASE_PORT + 3))
-      config3_port=$((mst_BASE_PORT + 4))
-      mongos_port=$((mst_BASE_PORT + 5))
-      for node in $nodes; do 
-          if [ $(echo $node|grep -c config) -gt 0 ]; then
-              mst_startInstance mongod $node $((mst_BASE_PORT + port_offset)) --configsvr
-          elif [ "$node" == "mongos" ]; then
-              mst_startInstance mongos $node $((mst_BASE_PORT + port_offset)) --configdb "$mst_HOSTNAME:$config1_port,$mst_HOSTNAME:$config2_port,$mst_HOSTNAME:$config3_port"
-          else
-              mst_startInstance mongod $node $((mst_BASE_PORT + port_offset))
-          fi
-          port_offset=$((port_offset + 1))
-      done
+function mst_test_shard_pair()
+{
+    nodes="shard1 shard2 config1 config2 config3 mongos"
+    port_offset=0
+    config1_port=$((mst_BASE_PORT + 2))
+    config2_port=$((mst_BASE_PORT + 3))
+    config3_port=$((mst_BASE_PORT + 4))
+    mongos_port=$((mst_BASE_PORT + 5))
+    for node in $nodes; do 
+        if [ $(echo $node|grep -c config) -gt 0 ]; then
+            mst_startInstance $_MST_MONGOD $node $((mst_BASE_PORT + port_offset)) --configsvr
+        elif [ "$node" == "mongos" ]; then
+            mst_startInstance $_MST_MONGOS $node $((mst_BASE_PORT + port_offset)) --configdb "$mst_HOSTNAME:$config1_port,$mst_HOSTNAME:$config2_port,$mst_HOSTNAME:$config3_port"
+        else
+            mst_startInstance $_MST_MONGOD $node $((mst_BASE_PORT + port_offset))
+        fi
+        port_offset=$((port_offset + 1))
+    done
 #+END_SRC
 
 Next, we add the shards: 
 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-    for port in $mst_BASE_PORT $((mst_BASE_PORT + 1)); do
-	mongo --port $mongos_port --eval "sh.addShard(\"$mst_HOSTNAME:$port\")"
-    done
+  for port in $mst_BASE_PORT $((mst_BASE_PORT + 1)); do
+$_MST_MONGO --port $mongos_port --eval "sh.addShard(\"$mst_HOSTNAME:$port\")"
+  done
 #+END_SRC
 
 We can now enable sharding for a database: 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-mongo --port $mongos_port --eval "sh.enableSharding(\"test\")" 
-mongo $mst_HOSTNAME:$mongos_port/test --eval 'db.test.insert({test:true})'
+$_MST_MONGO --port $mongos_port --eval "sh.enableSharding(\"test\")" 
+$_MST_MONGO $mst_HOSTNAME:$mongos_port/test --eval 'db.test.insert({test:true})'
 #+END_SRC
 
 And we're now ready to run the test and stop the instances: 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  sh mongo-summary.sh --extra --port $mongos_port > test_sharded_cluster.result.txt
-  for node in $nodes; do
-      mst_stopInstance $node
-  done
+sh mongo-summary.sh --extra --port $mongos_port > test_sharded_cluster.result.txt
+for node in $nodes; do
+    mst_stopInstance $node
+done
+mst_validateOutput test_sharded_cluster.result.txt "Sharding Summary" "Detected 2 shards" "Shards detail" "operations in progress"
 #+END_SRC
 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  }
+}
 #+END_SRC
 
 
@@ -580,26 +612,26 @@ This is the same as the previous case, except that we need 4 data nodes, as each
 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-  function mst_test_shard_replset()
-  {
-      nodes="shard1_1 shard1_2 shard2_1 shard2_2 config1 config2 config3 mongos"
-      port_offset=0
-      config1_port=$((mst_BASE_PORT + 4))
-      config2_port=$((mst_BASE_PORT + 5))
-      config3_port=$((mst_BASE_PORT + 6))
-      mongos_port=$((mst_BASE_PORT + 7))
-      for node in $nodes; do 
-          if [ $(echo $node|grep -c config) -gt 0 ]; then
-              mst_startInstance mongod $node $((mst_BASE_PORT + port_offset)) --configsvr
-          elif [ "$node" == "mongos" ]; then
-              mst_startInstance mongos $node $((mst_BASE_PORT + port_offset)) --configdb "$mst_HOSTNAME:$config1_port,$mst_HOSTNAME:$config2_port,$mst_HOSTNAME:$config3_port"
-          elif [ $(echo $node|grep -c shard1) -gt 0 ]; then
-              mst_startInstance mongod $node $((mst_BASE_PORT + port_offset)) --replSet rs1
-          else
-              mst_startInstance mongod $node $((mst_BASE_PORT + port_offset)) --replSet rs2
-          fi
-          port_offset=$((port_offset + 1))
-      done
+function mst_test_shard_replset()
+{
+    nodes="shard1_1 shard1_2 shard2_1 shard2_2 config1 config2 config3 mongos"
+    port_offset=0
+    config1_port=$((mst_BASE_PORT + 4))
+    config2_port=$((mst_BASE_PORT + 5))
+    config3_port=$((mst_BASE_PORT + 6))
+    mongos_port=$((mst_BASE_PORT + 7))
+    for node in $nodes; do 
+        if [ $(echo $node|grep -c config) -gt 0 ]; then
+            mst_startInstance $_MST_MONGOD $node $((mst_BASE_PORT + port_offset)) --configsvr
+        elif [ "$node" == "mongos" ]; then
+            mst_startInstance $_MST_MONGOS $node $((mst_BASE_PORT + port_offset)) --configdb "$mst_HOSTNAME:$config1_port,$mst_HOSTNAME:$config2_port,$mst_HOSTNAME:$config3_port"
+        elif [ $(echo $node|grep -c shard1) -gt 0 ]; then
+            mst_startInstance $_MST_MONGOD $node $((mst_BASE_PORT + port_offset)) --replSet rs1
+        else
+            mst_startInstance $_MST_MONGOD $node $((mst_BASE_PORT + port_offset)) --replSet rs2
+        fi
+        port_offset=$((port_offset + 1))
+    done
 
 #+END_SRC
 
@@ -607,53 +639,53 @@ Now we need to configure the replica sets.
 
 #+HEADERS: :tangle mongo-summary-test-sharded-rs1.js :noweb yes
 #+BEGIN_SRC js
-    <<js-tests-header>>
-    rs.initiate();
-    var prefix = HOSTNAME+":"+BASE_PORT;
-    [ prefix+0 ,prefix+1 ].forEach(
-        function (element, array, index) {
-            rs.add(element);
-            rs.config();
-        }
-    ); 
+  <<js-tests-header>>
+  rs.initiate();
+  var prefix = HOSTNAME+":"+BASE_PORT;
+  [ prefix+0 ,prefix+1 ].forEach(
+      function (element, array, index) {
+          rs.add(element);
+          rs.config();
+      }
+  ); 
 #+END_SRC
 
 #+HEADERS: :tangle mongo-summary-test-sharded-rs2.js :noweb yes
 #+BEGIN_SRC js
-    <<js-tests-header>>
-    rs.initiate();
-    var prefix = HOSTNAME+":"+BASE_PORT;
-    [ prefix+2, prefix+3 ].forEach(
-        function (element, array, index) {
-            rs.add(element);
-            rs.config();
-        }
-    ); 
+  <<js-tests-header>>
+  rs.initiate();
+  var prefix = HOSTNAME+":"+BASE_PORT;
+  [ prefix+2, prefix+3 ].forEach(
+      function (element, array, index) {
+          rs.add(element);
+          rs.config();
+      }
+  ); 
 #+END_SRC
 I need to run the sharded-rsN scripts twice because otherwise the secondary won't get added to the replica set. 
 #+HEADERS: :tangle mongo-summary-test.sh
 #+BEGIN_SRC sh
-      mongo --port $mst_BASE_PORT mongo-summary-test-sharded-rs1.js
-      sleep 1
-      mongo --port $((mst_BASE_PORT+2)) mongo-summary-test-sharded-rs2.js
-      sleep 1
-      mongo --port $mst_BASE_PORT mongo-summary-test-sharded-rs1.js
-      sleep 1
-      mongo --port $((mst_BASE_PORT+2)) mongo-summary-test-sharded-rs2.js
-      sleep 1
-      for port in $mst_BASE_PORT $((mst_BASE_PORT + 1)); do
-          mongo --port $mongos_port --eval "sh.addShard(\"rs1/$mst_HOSTNAME:$port\")"
-      done
-      for port in $((mst_BASE_PORT + 2)) $((mst_BASE_PORT + 3)); do
-          mongo --port $mongos_port --eval "sh.addShard(\"rs2/$mst_HOSTNAME:$port\")"
-      done
-      
-      mongo --port $mongos_port --eval "sh.enableSharding(\"test\")"
-      mongo $mst_HOSTNAME:$mongos_port/test --eval 'db.test.insert({test:true})'
-      
-      sh mongo-summary.sh --extra --port $mongos_port > test_sharded_cluster_replset.result.txt
-      for node in $nodes; do
-          mst_stopInstance $node
-      done
-  }
+    $_MST_MONGO --port $mst_BASE_PORT mongo-summary-test-sharded-rs1.js
+    sleep 1
+    $_MST_MONGO --port $((mst_BASE_PORT+2)) mongo-summary-test-sharded-rs2.js
+    sleep 1
+    $_MST_MONGO --port $mst_BASE_PORT mongo-summary-test-sharded-rs1.js
+    sleep 1
+    $_MST_MONGO --port $((mst_BASE_PORT+2)) mongo-summary-test-sharded-rs2.js
+    sleep 1
+    for port in $mst_BASE_PORT $((mst_BASE_PORT + 1)); do
+        $_MST_MONGO --port $mongos_port --eval "sh.addShard(\"rs1/$mst_HOSTNAME:$port\")"
+    done
+    for port in $((mst_BASE_PORT + 2)) $((mst_BASE_PORT + 3)); do
+        $_MST_MONGO --port $mongos_port --eval "sh.addShard(\"rs2/$mst_HOSTNAME:$port\")"
+    done
+    
+    $_MST_MONGO --port $mongos_port --eval "sh.enableSharding(\"test\")"
+    $_MST_MONGO$mst_HOSTNAME:$mongos_port/test --eval 'db.test.insert({test:true})'
+    
+    sh mongo-summary.sh --extra --port $mongos_port > test_sharded_cluster_replset.result.txt
+    for node in $nodes; do
+        mst_stopInstance $node
+    done
+}
 #+END_SRC

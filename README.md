@@ -2,8 +2,6 @@
 ognom-toolkit is a set of utilities, functions and tests with the goal
 of making the life of MongoDB/TokuMX administrators easier.
 
-TokuMX Toolkit is set of utilities, functions and tests which make life of TokuMX administrator easier
-
 # name
 ognom stands for mongo spelled backwards, with the following
 advantages:
